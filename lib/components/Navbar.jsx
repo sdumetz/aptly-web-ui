@@ -6,10 +6,17 @@ export default class Navbar extends React.Component{
     super(props)
   }
   render(){
-    return (<nav className="mdl-navigation" style={{width:"100%"}}>
-      <ul>
-        <li><Link to="">Home</Link></li>
-      </ul>
-    </nav>)
+    return (
+      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header has-drawer">
+      <header className="mdl-layout__header is-casting-shadow">
+        <div className="mdl-layout__header-row">
+          <span className="mdl-layout-title">{this.props.title}</span>
+          <nav className="mdl-navigation" style={{width:"100%"}}>
+            <Link to="" className="mdl-navigation__link">Home</Link>
+          </nav>
+          </div>
+        </header>
+    </div>
+  )
   }
 }
