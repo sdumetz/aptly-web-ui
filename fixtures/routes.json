@@ -1,0 +1,9 @@
+{
+  "version":{"Version":"0.9.6"},
+  "repos":[
+      {"Name":"aptly-repo","Comment":"","DefaultDistribution":"","DefaultComponent":""}
+    , {"Name":"aptly-repo2","Comment":"Sample aptly Repo","DefaultDistribution":"squeeze","DefaultComponent":"main"}
+  ],
+  "repos/aptly-repo":["Pi386 aptly 0.8 966561016b44ed80","Pamd64 aptly 0.8 966561016b44ed80"],
+  "repos/aptly-repo2":["Pi386 aptly 1.5 966561016b44ed80","Pamd64 aptly 1.5 966561016b44ed80"]
+}
