@@ -30,7 +30,7 @@ git config user.email "nobody@nowhere.org" || exit 1
 git add aptly-web-ui.tar.gz || exit 1
 git commit -m "Rebuild for $CURRENT_COMMIT ($(date +"%a %d %b %Y %R"))" || exit 1
 echo "push url : ${ORIGIN_URL}"
-git push --force --quiet "$ORIGIN_URL_WITH_CREDENTIALS" master ||exit 1
+git push --force --quiet "$ORIGIN_URL_WITH_CREDENTIALS" gh-pages ||exit 1
 
 echo "Cleaning up temp files"
 rm -Rf $TEMP_DIRECTORY
