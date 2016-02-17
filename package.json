@@ -29,10 +29,10 @@
     "express": "^4.13.4",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "webpack": "^1.12.12"
+    "webpack": "^1.12.12",
+    "react-router": "^2.0.0"
   },
   "dependencies": {
-    "material-design-lite": "^1.1.1",
-    "react-router": "^2.0.0"
+    "material-design-lite": "^1.1.1"
   }
 }
