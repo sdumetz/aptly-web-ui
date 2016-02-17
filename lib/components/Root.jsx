@@ -1,7 +1,8 @@
 import React from "react"
 import request from "../helpers/request.js"
 import Table from "./Table.jsx"
-export default class Body extends React.Component{
+import Navbar from "./Navbar.jsx"
+export default class Root extends React.Component{
   constructor(props){
     super(props)
     this.state={repos:[]}
@@ -13,9 +14,13 @@ export default class Body extends React.Component{
     });
   }
   render(){
-    return (<div className="content">
-      <h1>Available Repositories</h1>
-      <Table list={this.state.repos} />
+    var children = this.props.children || (<div><h1>Available Repositories</h1>
+    <Table list={this.state.repos} /></div>)
+    return (<div className="root">
+      <Navbar/>
+      <div className="content" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+        {children}
+      </div>
     </div>)
   }
 }

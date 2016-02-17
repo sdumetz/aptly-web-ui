@@ -1,9 +1,11 @@
 import React from "react"
 import request from "../helpers/request.js"
 import Repos from "./Repos.jsx"
-import {browserHistory} from "react-router"
 
 export default class Table extends React.Component{
+  static get contextTypes(){
+    return {router: React.PropTypes.object.isRequired}
+  }
   list_headers(){
     return(<tr>
       <th className="mdl-data-table__cell--non-numeric">Name</th>
@@ -13,7 +15,7 @@ export default class Table extends React.Component{
     </tr>)
   }
   _handleClick(name){
-    browserHistory.push("/repos/"+encodeURIComponent(name))
+    this.context.router.push("/repos/"+encodeURIComponent(name))
   }
   render(){
     var headers = this.list_headers()
