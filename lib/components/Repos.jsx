@@ -7,7 +7,7 @@ export default class Repos extends React.Component{
     this.state={packages:[]}
   }
   componentDidMount(){
-    request.getJSON(`/api/repos/${this.props.routeParams.name}`).then((r)=>{
+    request.getJSON(`/api/repos/${this.props.routeParams.name}/packages`).then((r)=>{
       console.log(r);
       this.setState({packages:r});
     });
