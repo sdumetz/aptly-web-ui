@@ -25,8 +25,8 @@ echo "copying new content"
 cd $TEMP_DIRECTORY && tar -zcf $DIR/aptly-web-ui.tar.gz * && cd $DIR ||exit 1
 
 echo "Pushing new content to $ORIGIN_URL"
-git config user.name "$GIT_NAME" || exit 1
-git config user.email "$GIT_EMAIL" || exit 1
+git config user.name "Travis CI" || exit 1
+git config user.email "nobody@nowhere.org" || exit 1
 git add aptly-web-ui.tar.gz || exit 1
 git commit -m "Rebuild for $CURRENT_COMMIT ($(date +"%a %d %b %Y %R"))" || exit 1
 echo "push url : ${ORIGIN_URL}"
