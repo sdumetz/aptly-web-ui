@@ -1,20 +1,25 @@
 'use strict';
 const webpack = require("webpack");
-const express = require("express")
+const express = require("express");
+const fs = require("fs")
 // Returns an Express server
 var server = express()
 var transpiler = webpack(require("./webpack.config.js"))
 var routes = require("./fixtures/routes.json")
-server.use(express.static('.'));
-/*
-server.get("/api/:cmd",function(req,res){
-  if(routes[req.params.cmd]){
-    res.status(200).send(routes[req.params.cmd])
-  }else{
-    console.log("unkwnown command : ",req.params.cmd)
-    res.status(404).send({code:404,message:"Not Found"});
-  }
-})*/
+server.use("/ui/vendor",express.static('vendor'));
+server.get("/ui*",function(req,res){
+  res.setHeader("content-type", "text/html");
+  fs.stat(__dirname+req.path.replace(/^\/ui/,""),function(err,stats){
+    if(err||!stats.isFile()){
+      console.log("serving index on : ",req.path.replace(/^\/ui/,""))
+      fs.createReadStream(__dirname+"/index.html").pipe(res)
+    }else{
+      fs.createReadStream(__dirname+req.path.replace(/^\/ui/,"")).pipe(res)
+    }
+  })
+
+})
+
 Object.keys(routes).forEach((route)=>{
   server.get("/api/"+route,function(req,res){
     res.status(200).send(routes[route])
