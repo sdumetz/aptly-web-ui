@@ -15,7 +15,7 @@ export default class Table extends React.Component{
     </tr>)
   }
   _handleClick(name){
-    this.context.router.push("/repos/"+encodeURIComponent(name))
+    this.context.router.push("/ui/repos/"+encodeURIComponent(name))
   }
   render(){
     var headers = this.list_headers()

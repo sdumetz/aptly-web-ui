@@ -12,7 +12,7 @@ export default class Navbar extends React.Component{
         <div className="mdl-layout__header-row">
           <span className="mdl-layout-title">{this.props.title}</span>
           <nav className="mdl-navigation" style={{width:"100%"}}>
-            <Link to="" className="mdl-navigation__link">Home</Link>
+            <Link to="/ui" className="mdl-navigation__link">Home</Link>
           </nav>
           </div>
         </header>
