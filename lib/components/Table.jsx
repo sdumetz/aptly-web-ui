@@ -1,6 +1,5 @@
 import React from "react"
 import request from "../helpers/request.js"
-import Repos from "./Repos.jsx"
 
 export default class Table extends React.Component{
   static get contextTypes(){

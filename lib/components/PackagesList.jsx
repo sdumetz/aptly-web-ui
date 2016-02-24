@@ -1,7 +1,7 @@
 import React from "react"
 import request from "../helpers/request.js"
 
-export default class Repos extends React.Component{
+export default class PackagesList extends React.Component{
   constructor(props){
     super(props)
     this.state={packages:[]}
