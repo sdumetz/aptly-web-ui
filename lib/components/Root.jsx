@@ -1,8 +1,8 @@
 import React from "react"
 import request from "../helpers/request.js"
 import Table from "./Table.jsx"
-import Navbar from "./Navbar.jsx"
-import Footer from "./Footer.jsx"
+import Navbar from "./layout/Navbar.jsx"
+import Footer from "./layout/Footer.jsx"
 
 export default class Root extends React.Component{
   constructor(props){

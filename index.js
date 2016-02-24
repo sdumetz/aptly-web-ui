@@ -7,6 +7,9 @@ var server = express()
 var transpiler = webpack(require("./webpack.config.js"))
 var routes = require("./fixtures/routes.json")
 server.use("/ui/vendor",express.static('vendor'));
+server.get("/",function(req,res){
+  res.redirect(301, '/ui/');
+})
 server.get("/ui*",function(req,res){
   res.setHeader("content-type", "text/html");
   fs.stat(__dirname+req.path.replace(/^\/ui/,""),function(err,stats){

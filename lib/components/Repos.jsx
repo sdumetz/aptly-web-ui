@@ -9,17 +9,37 @@ export default class Repos extends React.Component{
   componentDidMount(){
     request.getJSON(`/api/repos/${this.props.routeParams.name}/packages`).then((r)=>{
       console.log(r);
-      this.setState({packages:r});
+      var packages = r.reduce((els,str)=>{
+        var infos = str.split(" ");
+        var name = infos[1];
+        var arch = infos[0].slice(1);
+        var version = infos[2];
+        console.log("els : ",els)
+        if(!els[name]){
+          els[name] = [];
+        }
+        els[name].push({arch:arch,version:version});
+        return els;
+      },{});
+      this.setState({packages:packages});
     });
   }
+  buildList(pack,component){
+    var elems = pack.map((p)=>{
+      return (<li>{p[component]}</li>)
+    });
+    return (<ul style={{listStyle:"none",paddingLeft:"0px",textAlign:"center"}}>{elems}</ul>)
+  }
   render(){
-    var p = this.state.packages.map(function(pack,index){
-      var infos = pack.split(" "); // it'sl ike Pamd64 aptly 1.0.1 5d2eb872323a639f
 
-      return (<tr key={index}>
-        <td className="mdl-data-table__cell--non-numeric">{infos[0].slice(1)}</td>
-        <td className="mdl-data-table__cell--non-numeric">{infos[1]}</td>
-        <td className="mdl-data-table__cell--non-numeric">{infos[2]}</td>
+    var p = Object.keys(this.state.packages).map((name,index)=>{
+      var pack = this.state.packages[name];
+      var archs = this.buildList(pack,"arch")
+      var versions = this.buildList(pack,"version")
+      return (<tr key={index} className="package-line">
+          <td className="mdl-data-table__cell--non-numeric">{archs}</td>
+          <td className="mdl-data-table__cell--non-numeric">{name}</td>
+          <td className="mdl-data-table__cell--non-numeric">{versions}</td>
       </tr>)
     })
     return (<div>
