@@ -24,24 +24,26 @@ export default class Repos extends React.Component{
       this.setState({packages:packages});
     });
   }
-  buildList(pack,component){
-    var elems = pack.map((p)=>{
-      return (<li>{p[component]}</li>)
-    });
-    return (<ul style={{listStyle:"none",paddingLeft:"0px",textAlign:"center"}}>{elems}</ul>)
+  lineStyle(){
+    return {padding:"6px 18px 6px 18px",height:"auto"}
+  }
+  buildList(pack,index,name){
+    return (<tr key={index} style={{height:"auto"}} className="package-line">
+        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.arch}</td>
+        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{name}</td>
+        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.version}</td>
+    </tr>)
   }
   render(){
-
-    var p = Object.keys(this.state.packages).map((name,index)=>{
+    var index = 0;
+    var p = Object.keys(this.state.packages).reduce((elements,name)=>{
       var pack = this.state.packages[name];
-      var archs = this.buildList(pack,"arch")
-      var versions = this.buildList(pack,"version")
-      return (<tr key={index} className="package-line">
-          <td className="mdl-data-table__cell--non-numeric">{archs}</td>
-          <td className="mdl-data-table__cell--non-numeric">{name}</td>
-          <td className="mdl-data-table__cell--non-numeric">{versions}</td>
-      </tr>)
-    })
+      for(let i=0;i<pack.length;i++){
+        elements.push(this.buildList(pack[i],index,(i==0)?name:""));
+        index++;
+      }
+      return elements;
+    },[])
     return (<div>
       <h1>{this.props.routeParams.name}</h1>
       <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
