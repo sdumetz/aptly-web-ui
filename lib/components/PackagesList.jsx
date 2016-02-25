@@ -1,10 +1,11 @@
 import React from "react"
+import version_compare from "node-version-compare"
 import request from "../helpers/request.js"
-
+import Package from "./Package.jsx"
 export default class PackagesList extends React.Component{
   constructor(props){
     super(props)
-    this.state={packages:[]}
+    this.state={packages:[],active:null}
   }
   componentDidMount(){
     request.getJSON(`/api/repos/${this.props.routeParams.name}/packages`).then((r)=>{
@@ -14,36 +15,41 @@ export default class PackagesList extends React.Component{
         var name = infos[1];
         var arch = infos[0].slice(1);
         var version = infos[2];
-        console.log("els : ",els)
         if(!els[name]){
           els[name] = [];
         }
         els[name].push({arch:arch,version:version});
+        els[name] = els[name].sort(this.sortByVersion); //suboptimal : we sort on every addition.
         return els;
       },{});
       this.setState({packages:packages});
     });
   }
-  lineStyle(){
-    return {padding:"6px 18px 6px 18px",height:"auto"}
+  sortByVersion(a,b){
+    return - version_compare(a.version,b.version)
   }
-  buildList(pack,index,name){
-    return (<tr key={index} style={{height:"auto"}} className="package-line">
-        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.arch}</td>
-        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{name}</td>
-        <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.version}</td>
-    </tr>)
+  handleClick(name){
+    
+    if(!this.state.active){
+      this.setState({active:name});
+    }else{
+      this.setState({active:null});
+    }
+  }
+  makePackagesList(){
+    return Object.keys(this.state.packages).map((key,i)=>{
+      return (<Package key={key} name={key} repo = {this.props.routeParams.name} infos={this.state.packages[key]} expand={false} onClick={this.handleClick.bind(this)}/>)
+    });
   }
   render(){
     var index = 0;
-    var p = Object.keys(this.state.packages).reduce((elements,name)=>{
-      var pack = this.state.packages[name];
-      for(let i=0;i<pack.length;i++){
-        elements.push(this.buildList(pack[i],index,(i==0)?name:""));
-        index++;
-      }
-      return elements;
-    },[])
+    var p;
+    if(this.state.active){
+      p= (<Package name={this.state.active} repo = {this.props.routeParams.name} infos={this.state.packages[this.state.active]} expand={true} onClick={this.handleClick.bind(this)}/>)
+    }else{
+        p = <tbody>{this.makePackagesList()}</tbody>;
+    }
+
     return (<div>
       <h1>{this.props.routeParams.name}</h1>
       <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
@@ -52,9 +58,7 @@ export default class PackagesList extends React.Component{
         <th className="mdl-data-table__cell--non-numeric">Name</th>
         <th className="mdl-data-table__cell--non-numeric">Version</th>
       </tr></thead>
-      <tbody>
         {p}
-      </tbody>
       </table>
       </div>)
     }

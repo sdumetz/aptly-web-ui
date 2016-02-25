@@ -4,6 +4,6 @@
       {"Name":"aptly-repo","Comment":"","DefaultDistribution":"","DefaultComponent":""}
     , {"Name":"aptly-repo2","Comment":"Sample aptly Repo","DefaultDistribution":"squeeze","DefaultComponent":"main"}
   ],
-  "repos/aptly-repo/packages":["Pi386 aptly 0.8 966561016b44ed80","Pamd64 aptly 0.8 966561016b44ed80"],
+  "repos/aptly-repo/packages":["Pi386 aptly 0.8 966561016b44ed80","Pamd64 aptly 0.8 966561016b44ed80","Pamd64 golang 1.5 966561016b44edaa", "Pamd64 golang 1.6 966561016b44bbaa"],
   "repos/aptly-repo2/packages":["Pi386 aptly 1.5 966561016b44ed80","Pamd64 aptly 1.5 966561016b44ed80"]
 }
