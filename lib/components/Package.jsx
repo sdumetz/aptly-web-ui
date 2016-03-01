@@ -11,7 +11,7 @@ export default class Package extends React.Component{
     this.context.router.push(`/ui/repos/${this.props.repo}/packages/${this.props.name}`);
   }
   buildItem(pack,index){
-    return (<tr key={index} style={{height:"auto"}} className="package-line" onClick={this.handleClick.bind(this)}>
+    return (<tr key={index} style={{height:"auto"}} className="package-line" onClick={(this.expand)?null:this.handleClick.bind(this)}>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.arch}</td>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{(index ==0)?this.props.name:""}</td>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.version}</td>
