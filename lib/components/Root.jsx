@@ -21,7 +21,7 @@ export default class Root extends React.Component{
     var children = this.props.children || (<div>
     <Table list={this.state.repos} /></div>)
     return (<div className="root mdl-layout__container">
-      <Navbar title="Aptly Web UI" />
+      <Navbar title="Aptly Web UI" {...this.props} />
       <div className="content" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:"70px"}}>
         {children}
       </div>
