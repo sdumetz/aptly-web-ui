@@ -14,7 +14,6 @@ export default class Root extends React.Component{
   }
   componentDidMount(){
     request.getJSON("/api/repos").then((r)=>{
-      console.log(r);
       this.setState({repos:r});
     });
   }

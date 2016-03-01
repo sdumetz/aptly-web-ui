@@ -11,7 +11,7 @@ export default class RepoView extends React.Component{
   }
   componentDidMount(){
     request.getJSON(`/api/repos/${this.props.routeParams.repo}/packages`).then((r)=>{
-      console.log(r);
+      //console.log(r);
       var packages = r.reduce((els,str)=>{
         var infos = str.split(" ");
         var name = infos[1];
