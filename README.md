@@ -57,3 +57,7 @@ This solution is compatible with external auth methods like [oauth_proxy](https:
 ## Contribute
 
 Currently very few routes are implemented. This is developped using React and React-router.
+
+### BUGS
+
+- when navigating immediately to a "package" route, this.props.packages is not set and won't get updated when RepoView have fetched the packages list.
