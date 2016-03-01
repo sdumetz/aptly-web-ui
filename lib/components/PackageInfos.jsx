@@ -2,17 +2,15 @@ import React from "react"
 import version_compare from "node-version-compare"
 import request from "../helpers/request.js"
 import Package from "./Package.jsx"
-export default class PackagesList extends React.Component{
+export default class PackageInfos extends React.Component{
   makePackagesList(){
-    console.log("packages : ",this.props)
-    return Object.keys(this.props.packages).map((key,i)=>{
-      return (<Package key={key} name={key} repo = {this.props.name} infos={this.props.packages[key]} expand={false}/>)
-    });
+    if(this.props.packages[this.props.routeParams.name]){
+      return (<Package name={this.props.routeParams.name} repo = {this.props.repo} infos={this.props.packages[this.props.routeParams.name]} expand={true}/>)
+    }else{
+      return (<tbody></tbody>)
+    }
   }
   render(){
-    var index = 0;
-    var p = <tbody>{this.makePackagesList()}</tbody>;
-
     return (<div>
       <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead><tr>
@@ -20,7 +18,7 @@ export default class PackagesList extends React.Component{
           <th className="mdl-data-table__cell--non-numeric">Name</th>
           <th className="mdl-data-table__cell--non-numeric">Version</th>
         </tr></thead>
-        {p}
+        {this.makePackagesList()}
       </table>
     </div>)
   }
