@@ -6,7 +6,6 @@ export default class Navbar extends React.Component{
     super(props)
   }
   render(){
-    console.log(this.props);
     var paths = [];
     if(this.props.params["repo"]){
       paths.push((<Link to={`/ui/repos/${this.props.params["repo"]}`} key="repo" className="mdl-navigation__link">{this.props.params["repo"]}</Link>))

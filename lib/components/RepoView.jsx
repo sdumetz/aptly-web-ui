@@ -1,6 +1,7 @@
 import React from "react"
 import version_compare from "node-version-compare"
 import request from "../helpers/request.js"
+import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
 import PackagesList from "./PackagesList.jsx"
 
@@ -13,15 +14,12 @@ export default class RepoView extends React.Component{
     request.getJSON(`/api/repos/${this.props.routeParams.repo}/packages`).then((r)=>{
       //console.log(r);
       var packages = r.reduce((els,str)=>{
-        var infos = str.split(" ");
-        var name = infos[1];
-        var arch = infos[0].slice(1);
-        var version = infos[2];
-        if(!els[name]){
-          els[name] = [];
+        var infos = parseKey(str);
+        if(!els[infos.name]){
+          els[infos.name] = [];
         }
-        els[name].push({arch:arch,version:version,key:str});
-        els[name] = els[name].sort(this.sortByVersion); //suboptimal : we sort on every addition.
+        els[infos.name].push(infos);
+        els[infos.name] = els[infos.name].sort(this.sortByVersion); //suboptimal : we sort on every addition.
         return els;
       },{});
       this.setState({packages:packages});
@@ -32,6 +30,7 @@ export default class RepoView extends React.Component{
   }
   render(){
     var children;
+    console.log("render with state : ",this.state.packages)
     if(this.props.children){
       children = React.cloneElement(this.props.children,{packages:this.state.packages});
     } else {

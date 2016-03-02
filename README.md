@@ -61,3 +61,4 @@ Currently very few routes are implemented. This is developped using React and Re
 ### BUGS
 
 - when navigating immediately to a "package" route, this.props.packages is not set and won't get updated when RepoView have fetched the packages list.
+- Will always fetch packages list even if we go straight to a package's URL.
