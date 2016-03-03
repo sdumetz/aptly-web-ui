@@ -15,7 +15,6 @@ export default class Package extends React.Component{
     }
   }
   buildItem(pack,index){
-    console.log(this.props);
     var style = {
       height:"auto",
       backgroundColor: (pack.key && pack.key == this.props.activeKey)? "#3f51b5":null,

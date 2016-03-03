@@ -6,13 +6,17 @@ export default class PackageDetails extends React.Component{
     super(props);
     this.state = {confirm:null}
   }
+  static get contextTypes(){
+    return {router: React.PropTypes.object.isRequired}
+  }
   confirm(handle){
     this.setState({confirm:{title:"Really Delete?",text:`${this.props.Package}-${this.props.Version} (${this.props.repo})`,handle:handle}});
   }
   handleRemove(valid){
     if(valid){
-      request.delete(`/api/repos/${this.props.repo}/packages`,JSON.stringify({PackageRefs:[this.props.Key]})).then(function(r){
+      request.delete(`/api/repos/${this.props.repo}/packages`,{PackageRefs:[this.props.Key]}).then(function(r){
         console.log("deleted package : ",this.props.Key);
+        this.context.router.push(`/ui/repos/${this.props.repo}/packages/${this.props.name}`);
       });
     }
     this.setState({confirm:null});

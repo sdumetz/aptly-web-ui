@@ -42,7 +42,7 @@ export default class PackageInfos extends React.Component{
         <div>Select a package in the list to see details</div>
       </div>)
     }else{
-      return (<PackageDetails {...this.state.infos} repo={this.props.routeParams.repo}/>)
+      return (<PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>)
     }
   }
   render(){
