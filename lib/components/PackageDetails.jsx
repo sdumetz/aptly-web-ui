@@ -16,7 +16,7 @@ export default class PackageDetails extends React.Component{
     if(valid){
       request.delete(`/api/repos/${this.props.repo}/packages`,{PackageRefs:[this.props.Key]}).then((r)=>{
         console.log("deleted package : ",this.props.Key);
-        window.location = `/ui/repos/${this.props.repo}/packages/${this.props.name}`);//We *WANT* the page refresh here. Otherwise we'd have to bubble up the change to edit available packages list.
+        window.location = `/ui/repos/${this.props.repo}/packages/${this.props.name}`;//We *WANT* the page refresh here. Otherwise we'd have to bubble up the change to edit available packages list.
       });
     }
     this.setState({confirm:null});
@@ -28,7 +28,7 @@ export default class PackageDetails extends React.Component{
       {dialog}
       <div>Version : <b>{this.props.Version}</b></div>
       <div style={{maxWidth:"500",padding:"10px",boxShadow: "0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)"}}>
-        {this.props.Description}
+        <pre>{this.props.Description}</pre>
       </div>
       <div style={{padding:"10px"}}>
         <button onClick={this.confirm.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</button>
