@@ -30,7 +30,6 @@ export default class RepoView extends React.Component{
   }
   render(){
     var children;
-    console.log("render with state : ",this.state.packages)
     if(this.props.children){
       children = React.cloneElement(this.props.children,{packages:this.state.packages});
     } else {

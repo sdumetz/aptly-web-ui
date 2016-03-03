@@ -17,7 +17,6 @@ export default class PackageInfos extends React.Component{
     key = key||this.props.packages[this.props.routeParams.name];
     if(!key) return;
     request.getJSON(`/api/packages/${encodeURIComponent(key[0].key)}`).then((r)=>{
-      console.log("set state")
       this.setState({infos:r});
     })
   }
