@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="/ui/vendor/mdl/material.min.css">
+  <link rel="stylesheet" href="/ui/vendor/mdl/material.blue-pink.min.css">
   <script src="/ui/vendor/mdl/material.min.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <script defer src="/ui/dist/bundle.js"></script>
   <style>
+    body{
+      font-family: 'Roboto','Helvetica','Arial',sans-serif!important;
+    }
+    h4{
+      color:#757575;
+      font-weight:700;
+    }
+    .mdl-layout-title a{
+      color:inherit;
+      text-decoration: inherit;
+    }
     .nav-path>a:before{
-      content:"/";
-      padding-right:5px;
-      font-size:30px;
+      content:">";
+      position:relative;
+      font-size:25px;
+      left:-18px;
       vertical-align: middle;
+      font-weight:400;
+    }
+    .nav-path>a{
+      font-weight:700;
     }
     .nav-path>a:hover{
       background-color:rgba(0,0,0,0.1);
