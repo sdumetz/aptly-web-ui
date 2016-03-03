@@ -14,9 +14,9 @@ export default class PackageDetails extends React.Component{
   }
   handleRemove(valid){
     if(valid){
-      request.delete(`/api/repos/${this.props.repo}/packages`,{PackageRefs:[this.props.Key]}).then(function(r){
+      request.delete(`/api/repos/${this.props.repo}/packages`,{PackageRefs:[this.props.Key]}).then((r)=>{
         console.log("deleted package : ",this.props.Key);
-        this.context.router.push(`/ui/repos/${this.props.repo}/packages/${this.props.name}`);
+        window.location = `/ui/repos/${this.props.repo}/packages/${this.props.name}`);//We *WANT* the page refresh here. Otherwise we'd have to bubble up the change to edit available packages list.
       });
     }
     this.setState({confirm:null});
