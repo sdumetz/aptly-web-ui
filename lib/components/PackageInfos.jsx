@@ -1,6 +1,7 @@
 import React from "react"
 import version_compare from "node-version-compare"
 import request from "../helpers/request.js"
+import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
 import PackageDetails from "./PackageDetails.jsx"
 import Spinner from "./ui/Spinner.jsx"
@@ -8,21 +9,28 @@ export default class PackageInfos extends React.Component{
   constructor(props){
     super(props)
     this.state={infos:{}}
+
+  }
+  componentDidMount(){
+    this.getKey(this.props.location.query.key)
   }
   componentWillReceiveProps(nextProps){
-    console.log(nextProps);
-    this.getKey(nextProps.packages[nextProps.routeParams.name]);
+    this.getKey(nextProps.location.query.key);
   }
   getKey(key){
-    key = key||this.props.packages[this.props.routeParams.name];
-    if(!key) return;
-    request.getJSON(`/api/packages/${encodeURIComponent(key[0].key)}`).then((r)=>{
+    if(!key) return this.setState({infos:{}});
+
+    request.getJSON(`/api/packages/${encodeURIComponent(key)}`).then((r)=>{
       this.setState({infos:r});
     })
   }
   makePackagesList(){
     if(this.props.packages[this.props.routeParams.name]){
-      return (<Package name={this.props.routeParams.name} repo = {this.props.routeParams.repo} infos={this.props.packages[this.props.routeParams.name]} expand={true}/>)
+      return (<Package name={this.props.routeParams.name}
+        repo = {this.props.routeParams.repo}
+        infos={this.props.packages[this.props.routeParams.name]}
+        activeKey={this.props.location.query.key} expand={true}
+      />)
     }else{
       return (<tbody></tbody>)
     }
