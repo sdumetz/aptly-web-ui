@@ -33,6 +33,6 @@
     "react-router": "^2.0.0"
   },
   "dependencies": {
-    "node-version-compare": "^1.0.1"
+    "deb-version-compare": "^1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import React from "react"
-import version_compare from "node-version-compare"
+import version_compare from "deb-version-compare"
 import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
