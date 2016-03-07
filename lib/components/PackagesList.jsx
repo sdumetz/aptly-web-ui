@@ -1,5 +1,4 @@
 import React from "react"
-import version_compare from "node-version-compare"
 import request from "../helpers/request.js"
 import Package from "./Package.jsx"
 export default class PackagesList extends React.Component{
