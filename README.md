@@ -1,5 +1,5 @@
 # aptly-web-ui
-Simple web UI for aptly
+Simple web UI for aptly. Currently only support local repos query and content deletion, but it's under active development and any requests are welcomed.
 
 ## Usage
 
@@ -60,5 +60,4 @@ Currently very few routes are implemented. This is developped using React and Re
 
 ### BUGS
 
-- when navigating immediately to a "package" route, this.props.packages is not set and won't get updated when RepoView have fetched the packages list.
-- Will always fetch packages list even if we go straight to a package's URL.
+- Will always fetch packages list even if we go straight to a package's URL. (Maybe not a problem : Need to check load on aptly to generate large packages lists).
