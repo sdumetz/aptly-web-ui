@@ -17,10 +17,11 @@ export default class Package extends React.Component{
   buildItem(pack,index){
     var style = {
       height:"auto",
-      backgroundColor: (pack.key && pack.key == this.props.activeKey)? "#3f51b5":null,
+      cursor:"pointer",
       color: (pack.key && pack.key == this.props.activeKey)? "#ffffff":null
     }
-    return (<tr key={index} style={style} className="package-line" onClick={(this.expand)?null:this.handleClick.bind(this,pack.key)}>
+    var classes = `package-line${(pack.key && pack.key == this.props.activeKey)?" mdl-color--primary":""}`
+    return (<tr key={index} style={style} className={classes} onClick={(this.expand)?null:this.handleClick.bind(this,pack.key)}>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.arch}</td>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{(index ==0)?this.props.name:""}</td>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.version}</td>

@@ -23,15 +23,16 @@ export default class PackageDetails extends React.Component{
   }
   render(){
     var dialog = (this.state.confirm)?<Dialog {...this.state.confirm}/>:"";
+    var btnStyle = {margin:5}
     return (<div>
       <h4>{this.props.Package}</h4>
       {dialog}
       <div>Version : <b>{this.props.Version}</b></div>
-      <div style={{maxWidth:"500",padding:"10px",boxShadow: "0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)"}}>
+      <div style={{maxWidth:"800",padding:"10px",boxShadow: "0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)"}}>
         <pre>{this.props.Description}</pre>
       </div>
       <div style={{padding:"10px"}}>
-        <button onClick={this.confirm.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</button>
+        <a style={btnStyle} onClick={this.confirm.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</a>
       </div>
     </div>)
   }
