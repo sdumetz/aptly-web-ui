@@ -24,7 +24,7 @@ export default class Table extends React.Component{
        <td>{el.Name}</td>
        <td>{el.Comment}</td>
        <td>{el.DefaultDistribution}</td>
-       <td>{el.defaultComponent}</td>
+       <td>{el.DefaultComponent}</td>
      </tr>)
    })
 
