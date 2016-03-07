@@ -28,8 +28,8 @@ export default class MigrateView extends React.Component{
   render(){
     var repos = Object.keys(this.state.presence).map((repo)=>{
       return (<tr key={repo}>
-        <td>{repo}</td>
-        <td>
+        <td className="mdl-data-table__cell--non-numeric">{repo}</td>
+        <td className="mdl-data-table__cell--non-numeric">
           <label className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="switch-1">
             <input type="checkbox" id="switch-1" className="mdl-switch__input" checked={this.state.presence[repo]}/>
             <span className="mdl-switch__label"></span>
@@ -39,9 +39,12 @@ export default class MigrateView extends React.Component{
     })
     return (<div style={{display:"flex"}}>
       <div style={{padding:"0px 10px 25px 0px"}}>
-        <table>
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead>
-          <tr><th>Repo</th><th>Presence</th></tr>
+          <tr>
+            <th className="mdl-data-table__cell--non-numeric">Repo</th>
+            <th className="mdl-data-table__cell--non-numeric">Presence</th>
+          </tr>
         </thead>
         <tbody>
           {repos}
