@@ -18,9 +18,9 @@ export default class Package extends React.Component{
     var style = {
       height:"auto",
       cursor:"pointer",
-      color: (pack.key && pack.key == this.props.activeKey)? "#ffffff":null
+      fontWeight: (pack.key && pack.key == this.props.activeKey)? "600":"inherit"
     }
-    var classes = `package-line${(pack.key && pack.key == this.props.activeKey)?" mdl-color--primary":""}`
+    var classes = `package-line${(pack.key && pack.key == this.props.activeKey)?" mdl-color-text--primary":""}`
     return (<tr key={index} style={style} className={classes} onClick={(this.expand)?null:this.handleClick.bind(this,pack.key)}>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{pack.arch}</td>
         <td style={this.lineStyle()} className="mdl-data-table__cell--non-numeric">{(index ==0)?this.props.name:""}</td>
