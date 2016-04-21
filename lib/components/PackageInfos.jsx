@@ -3,6 +3,7 @@ import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
 import PackageDetails from "./PackageDetails.jsx"
+import Migrate from "./Migrate.jsx"
 import Dialog from "./ui/Dialog.jsx"
 export default class PackageInfos extends React.Component{
   constructor(props){
@@ -22,7 +23,6 @@ export default class PackageInfos extends React.Component{
     if(!key) return this.setState({infos:{}});
 
     request.getJSON(`/api/packages/${encodeURIComponent(key)}`).then((r)=>{
-      console.log("Get package infos : ",r);
       this.setState({infos:r});
     })
   }
@@ -45,11 +45,12 @@ export default class PackageInfos extends React.Component{
         <div>Select a package in the list to see details</div>
       </div>)
     }else{
+      var mig = (this.props.location.query.key)? <Migrate pkey={this.props.location.query.key}/>:null;
       return (<div>
         <PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>
+        {mig}
         <div>
           <a style={btnStyle} onClick={this.confirmBox.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</a>
-          <a style={btnStyle} onClick={this.handleMigrate.bind(this)} className="mdl-button mdl-js-button mdl-button--raised">Migrate</a>
         </div>
       </div>)
     }
@@ -65,9 +66,6 @@ export default class PackageInfos extends React.Component{
       });
     }
     this.setState({confirm:null});
-  }
-  handleMigrate(){
-    this.context.router.push(`/ui/migrate/${encodeURIComponent(this.state.infos.Key)}`);
   }
   render(){
     var dialog = (this.state.confirm)?<Dialog {...this.state.confirm}/>:"";
