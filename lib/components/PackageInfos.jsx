@@ -8,7 +8,7 @@ import Dialog from "./ui/Dialog.jsx"
 export default class PackageInfos extends React.Component{
   constructor(props){
     super(props)
-    this.state={infos:{}}
+    this.state={infos:{},key:""}
   }
   static get contextTypes(){
     return {router: React.PropTypes.object.isRequired}
@@ -23,7 +23,7 @@ export default class PackageInfos extends React.Component{
     if(!key) return this.setState({infos:{}});
 
     request.getJSON(`/api/packages/${encodeURIComponent(key)}`).then((r)=>{
-      this.setState({infos:r});
+      this.setState({infos:r,key:key});
     })
   }
   makePackagesList(){
@@ -31,7 +31,7 @@ export default class PackageInfos extends React.Component{
       return (<Package name={this.props.routeParams.name}
         repo = {this.props.routeParams.repo}
         infos={this.props.packages[this.props.routeParams.name]}
-        activeKey={this.props.location.query.key} expand={true}
+        activeKey={this.state.key} expand={true}
       />)
     }else{
       return (<tbody></tbody>)
@@ -45,7 +45,7 @@ export default class PackageInfos extends React.Component{
         <div>Select a package in the list to see details</div>
       </div>)
     }else{
-      var mig = (this.props.location.query.key)? <Migrate pkey={this.props.location.query.key}/>:null;
+      var mig = (this.state.key)? <Migrate pkey={this.state.key}/>:null;
       return (<div>
         <PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>
         {mig}

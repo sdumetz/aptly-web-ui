@@ -4,15 +4,21 @@ import parseKey from "../helpers/parseKey.js"
 export default class Migrate extends React.Component{
   constructor(props){
     super(props)
-    this.state = {presence:[],confirm:null};
-  }
-  get infos(){
-    return parseKey(this.props.pkey);
+    this.state = {presence:{},confirm:null};
   }
   componentDidMount(){
+    this.getPackageInfos(this.props.pkey);
+  }
+  componentWillReceiveProps(nextProps){
+    if (nextProps.pkey != this.props.pkey){
+      this.getPackageInfos(nextProps.pkey);
+    }
+  }
+  getPackageInfos(key){
+    var infos = parseKey(key);
     request.getJSON("/api/repos").then((r)=>{
       var packages = r.map((repo)=>{
-        return request.getJSON(`/api/repos/${repo.Name}/packages?q=${this.infos.name}_${this.infos.version}_${this.infos.arch}`).catch((e)=>{return []})
+        return request.getJSON(`/api/repos/${repo.Name}/packages?q=${infos.name}_${infos.version}_${infos.arch}`).catch((e)=>{return []})
       });
       Promise.all(packages).then((p)=>{
         var fin = r.reduce(function(repos,repo,index){
@@ -50,12 +56,12 @@ export default class Migrate extends React.Component{
     }
   }
   render(){
+    console.log("render",this.state.presence)
     var cellStyle = {
       padding:10,
       minWidth:50,
       cursor:"pointer"
     }
-    var dialog = (this.state.confirm)?<Dialog {...this.state.confirm}/>:"";
     var repos = Object.keys(this.state.presence).map((repo)=>{
       return (<div className={(this.state.presence[repo])?"mdl-color--primary":""} style={cellStyle} key={repo} onClick={this.handleChange.bind(this,repo)}>
         {repo}
