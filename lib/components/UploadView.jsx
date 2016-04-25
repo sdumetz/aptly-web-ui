@@ -2,6 +2,7 @@ import React from "react"
 import Dropzone from 'react-dropzone'
 import UploadElement from './UploadElement.jsx'
 import request from "../helpers/request.js"
+import RepoPicker from "./RepoPicker.jsx"
 export default class UploadView extends React.Component{
   constructor(props){
     super(props)
@@ -24,26 +25,30 @@ export default class UploadView extends React.Component{
   onDrop(files) {
     this.push(files);
   }
-  handleChange(){
-    console.log("change")
-  }
   render(){
     var elements = this.state.uploads.map((e)=>{
-      return <UploadElement file={e} uploaded={e.finished} key={e.name} onClick={this.handleChange.bind(this)}/>
+      return <UploadElement file={e} uploaded={e.finished} key={e.name}/>
     });
     return (<div style={{paddingTop:50}} >
-      <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <tbody>
-          <tr><td colSpan={2}>
-            <Dropzone onDrop={this.onDrop.bind(this)} style={{border:"none"}} >
-              <div className="mdl-color-text--primary">Drop files to upload</div>
-            </Dropzone>
-          </td></tr>
-        </tbody>
-        <tbody>
-          {elements}
-        </tbody>
-      </table>
+      <div>
+        Target Repository :
+        <RepoPicker/>
+      </div>
+      <div>
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+          <tbody>
+            <tr><td colSpan={2}>
+              <Dropzone onDrop={this.onDrop.bind(this)} style={{border:"none"}} >
+                <div className="mdl-color-text--primary"><center>Drop files to upload</center></div>
+              </Dropzone>
+            </td></tr>
+          </tbody>
+          <tbody>
+            {elements}
+          </tbody>
+        </table>
+      </div>
+
     </div>)
   }
 }
