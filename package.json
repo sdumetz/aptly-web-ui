@@ -33,6 +33,7 @@
     "react-router": "^2.0.0"
   },
   "dependencies": {
-    "deb-version-compare": "^1.1.1"
+    "deb-version-compare": "^1.1.1",
+    "react-dropzone": "^3.4.0"
   }
 }
