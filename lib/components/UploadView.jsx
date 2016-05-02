@@ -1,33 +1,31 @@
-import React from "react"
+import React, { PropTypes } from "react"
 import Dropzone from 'react-dropzone'
 import UploadElement from './UploadElement.jsx'
 import request from "../helpers/request.js"
 import RepoPicker from "./RepoPicker.jsx"
+
+import { connect } from 'react-redux'
+import {upload, importUploadedFiles, toggleUpload} from "../actions"
+
 export default class UploadView extends React.Component{
   constructor(props){
     super(props)
-    this.state = {uploads:[],selected:[]};
   }
   componentDidMount(){
-    request.getJSON("/api/files/upload").then((files)=>{
-      this.push(files.map(function(file){
-        return {name:file,finished:true}
-      }),true);
-    }).catch(function(e){
-      console.log("Error fetching existing uploaded files : ",e)
+    this.props.importUploadedFiles();
+  }
+
+  onDrop(files) {
+    files.forEach((file)=>{
+      this.props.upload(file);
     })
   }
-  push(elements){
-    if (elements.length===0){return;}
-    Array.prototype.unshift.apply(this.state.uploads,elements);
-    this.setState({uploads:this.state.uploads})
-  }
-  onDrop(files) {
-    this.push(files);
+  handleToggle(name){
+    this.props.toggleUpload(name);
   }
   render(){
-    var elements = this.state.uploads.map((e)=>{
-      return <UploadElement file={e} uploaded={e.finished} key={e.name}/>
+    var elements = Object.keys(this.props.files).map((name,index)=>{
+      return <UploadElement name={name}  key={name} active={false} handleClick={this.handleToggle.bind(this,name)} {...this.props.files[name]}/>
     });
     return (<div style={{paddingTop:50}} >
       <div>
@@ -52,3 +50,24 @@ export default class UploadView extends React.Component{
     </div>)
   }
 }
+UploadView.PropTypes = {
+  files: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
+}
+function mapStateToProps(state){
+  const files = state.uploads;
+  return {files:files};
+}
+function mapDispatchToProps(dispatch){
+  return {
+    importUploadedFiles:()=>{
+      return dispatch(importUploadedFiles())
+    },
+    upload:(file)=>{
+      return dispatch(upload(file))
+    },
+    toggleUpload:(name)=>{
+      return dispatch(toggleUpload(name))
+    }
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(UploadView)

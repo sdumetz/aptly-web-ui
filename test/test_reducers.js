@@ -10,16 +10,20 @@ describe("global test",()=>{
   });
 })
 describe("uploads",()=>{
-  it("handle UPLOAD_START",()=>{
+  it("UPLOAD_START handle",()=>{
     let finalState = assignState({uploads:{'test_file.txt':{size:25000,progress:0,active:false}}})
     expect(reducer(undefined,{type:'UPLOAD_START',name:"test_file.txt",size:25000})).to.deep.equal(finalState);
   });
-  it("handle UPLOAD_PROGRESS",()=>{
+  it("UPLOAD_START set progress",()=>{
+    let finalState = assignState({uploads:{'test_file.txt':{size:0,progress:true,active:false}}})
+    expect(reducer(undefined,{type:'UPLOAD_START',name:"test_file.txt",progress:true})).to.deep.equal(finalState);
+  });
+  it("UPLOAD_PROGRESS handle",()=>{
     let firstState = assignState({uploads:{'test_file.txt':{size:25000,progress:0,active:false}}})
     let finalState = assignState({uploads:{'test_file.txt':{size:25000,progress:10,active:false}}})
     expect(reducer(firstState,{type:'UPLOAD_PROGRESS',name:"test_file.txt",progress:10})).to.deep.equal(finalState);
   });
-  it("handle UPLOAD_TOGGLE",()=>{
+  it("UPLOAD_TOGGLE handle",()=>{
     let inactiveState = assignState({uploads:{'test_file.txt':{size:25000,progress:0,active:false}}})
     let activeState = assignState({uploads:{'test_file.txt':{size:25000,progress:0,active:true}}})
     expect(reducer(inactiveState,{type:'UPLOAD_TOGGLE',name:"test_file.txt"})).to.deep.equal(activeState);

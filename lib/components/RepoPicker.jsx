@@ -19,7 +19,6 @@ class RepoPicker extends React.Component{
     }
   }
   render(){
-    console.log(this.props)
     const {active,items} = this.props
     return (
       <div className="">
