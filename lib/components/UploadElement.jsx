@@ -1,6 +1,9 @@
-import React from "react"
+import React, { PropTypes } from "react"
 import Spinner from "./ui/Spinner.jsx"
-export default class UploadElement extends React.Component{
+
+import { connect } from 'react-redux'
+
+class UploadElement extends React.Component{
   constructor(props){
     super(props)
     this.state = {progress:props.uploaded ||0,active:false};
@@ -43,7 +46,9 @@ export default class UploadElement extends React.Component{
     }
   }
   handleValidClick(){
-    this.setState({active:!this.state.active})
+    if(this.state.active == true) return;
+    this.setState({active:true});
+    
   }
   render(){
     var progress;
@@ -74,3 +79,9 @@ export default class UploadElement extends React.Component{
     </tr>)
   }
 }
+function mapStateToProps(state){
+  const {active,items} = state.repos;
+  return {active,items};
+}
+
+export default connect(mapStateToProps)(UploadElement)

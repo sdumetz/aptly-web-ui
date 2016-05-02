@@ -1,12 +1,16 @@
-import React from "react"
+import React, { PropTypes } from "react"
 import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
+import {fetchReposIfNeeded} from "../actions"
+import { connect } from 'react-redux'
+
 export default class Migrate extends React.Component{
   constructor(props){
     super(props)
     this.state = {presence:{},confirm:null};
   }
   componentDidMount(){
+    this.props.fetchReposIfNeeded();
     this.getPackageInfos(this.props.pkey);
   }
   componentWillReceiveProps(nextProps){
@@ -16,17 +20,15 @@ export default class Migrate extends React.Component{
   }
   getPackageInfos(key){
     var infos = parseKey(key);
-    request.getJSON("/api/repos").then((r)=>{
-      var packages = r.map((repo)=>{
-        return request.getJSON(`/api/repos/${repo.Name}/packages?q=${infos.name}_${infos.version}_${infos.arch}`).catch((e)=>{return []})
-      });
-      Promise.all(packages).then((p)=>{
-        var fin = r.reduce(function(repos,repo,index){
-          repos[repo.Name] = (p[index].length >0)?true:false;
-          return repos;
-        },{});
-        this.setState({presence:fin});
-      });
+    var packages = this.props.items.map((repo)=>{
+      return request.getJSON(`/api/repos/${repo.Name}/packages?q=${infos.name}_${infos.version}_${infos.arch}`).catch((e)=>{return []})
+    });
+    Promise.all(packages).then((p)=>{
+      var fin = this.props.items.reduce(function(repos,repo,index){
+        repos[repo.Name] = (p[index].length >0)?true:false;
+        return repos;
+      },{});
+      this.setState({presence:fin});
     });
   }
   countActive(presence){
@@ -72,3 +74,18 @@ export default class Migrate extends React.Component{
     </div>)
   }
 }
+Migrate.PropTypes = {
+  repos: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
+}
+function mapStateToProps(state){
+  const {items} = state.repos;
+  return {items};
+}
+function mapDispatchToProps(dispatch){
+  return {
+    fetchReposIfNeeded:()=>{
+      return dispatch(fetchReposIfNeeded())
+    }
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Migrate)

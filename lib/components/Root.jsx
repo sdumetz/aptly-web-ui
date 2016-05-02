@@ -1,22 +1,23 @@
-import React from "react"
+import React, { PropTypes } from "react"
 import request from "../helpers/request.js"
 import Table from "./Table.jsx"
 import Navbar from "./layout/Navbar.jsx"
 import Footer from "./layout/Footer.jsx"
 import {Link} from 'react-router'
 
+import { connect } from 'react-redux'
+import {fetchReposIfNeeded} from "../actions"
+
+
 export default class Root extends React.Component{
   constructor(props){
     super(props)
-    this.state={repos:[]}
   }
   static get contextTypes(){
     return {router: React.PropTypes.object.isRequired}
   }
   componentDidMount(){
-    request.getJSON("/api/repos").then((r)=>{
-      this.setState({repos:r});
-    });
+    this.props.fetchReposIfNeeded();
   }
   render(){
     var children = this.props.children || (<div>
@@ -30,7 +31,7 @@ export default class Root extends React.Component{
           </button>
         </Link>
       </div>
-    <Table list={this.state.repos} /></div>)
+    <Table list={this.props.items} /></div>)
     return (<div className="root mdl-layout__container">
       <Navbar title="Aptly Web UI" {...this.props} />
       <div className="content" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
@@ -40,3 +41,19 @@ export default class Root extends React.Component{
     </div>)
   }
 }
+
+Root.PropTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
+}
+function mapStateToProps(state){
+  const {items} = state.repos;
+  return {items};
+}
+function mapDispatchToProps(dispatch){
+  return {
+    fetchReposIfNeeded:()=>{
+      return dispatch(fetchReposIfNeeded())
+    }
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Root)
