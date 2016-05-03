@@ -52,7 +52,7 @@ export default class UploadView extends React.Component{
         Target Repository :
         <RepoPicker/>
       </div>
-      <div style={{marginTop:-20,marginRight:-20,display:"flex",flexDirection:"row-reverse"}}>
+      <div style={{display:"flex",flexDirection:"row-reverse"}}>
         <button onClick={this.handleSend.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised">Send</button>
         <button onClick={this.handleRemove.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</button>
       </div>
