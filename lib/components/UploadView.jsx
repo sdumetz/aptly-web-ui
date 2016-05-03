@@ -5,7 +5,7 @@ import request from "../helpers/request.js"
 import RepoPicker from "./RepoPicker.jsx"
 
 import { connect } from 'react-redux'
-import {upload, importUploadedFiles, toggleUpload, sendFiles} from "../actions"
+import {upload, importUploadedFiles, toggleUpload, sendSelectedFiles,removeSelectedFiles} from "../actions"
 
 export default class UploadView extends React.Component{
   constructor(props){
@@ -24,7 +24,10 @@ export default class UploadView extends React.Component{
     this.props.toggleUpload(name);
   }
   handleSend(){
-    this.props.sendFiles();
+    this.props.sendSelectedFiles();
+  }
+  handleRemove(){
+    this.props.removeSelectedFiles();
   }
   render(){
     var elements = Object.keys(this.props.files).map((name,index)=>{
@@ -32,15 +35,11 @@ export default class UploadView extends React.Component{
     });
     return (<div style={{paddingTop:50}} >
       <div>
-        Target Repository :
-        <RepoPicker/>
-      </div>
-      <div>
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
           <tbody>
             <tr><td colSpan={2}>
-              <Dropzone onDrop={this.onDrop.bind(this)} style={{border:"none"}} >
-                <div className="mdl-color-text--primary"><center>Drop files to upload</center></div>
+              <Dropzone onDrop={this.onDrop.bind(this)} style={{border:"none",minWidth:400}} >
+                <div className="mdl-color-text--primary"><center>Drop files or click here to upload</center></div>
               </Dropzone>
             </td></tr>
           </tbody>
@@ -49,8 +48,13 @@ export default class UploadView extends React.Component{
           </tbody>
         </table>
       </div>
-      <div style={{padding:10}}>
-        <button onClick={this.handleSend.bind(this)} style={{position:"relative",float:"right",marginTop:-20,marginRight:-20, clear:"both"}} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Send</button>
+      <div>
+        Target Repository :
+        <RepoPicker/>
+      </div>
+      <div style={{marginTop:-20,marginRight:-20,display:"flex",flexDirection:"row-reverse"}}>
+        <button onClick={this.handleSend.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised">Send</button>
+        <button onClick={this.handleRemove.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</button>
       </div>
     </div>)
   }
@@ -73,8 +77,11 @@ function mapDispatchToProps(dispatch){
     toggleUpload:(name)=>{
       return dispatch(toggleUpload(name))
     },
-    sendFiles:()=>{
-      return dispatch(sendFiles())
+    sendSelectedFiles:()=>{
+      return dispatch(sendSelectedFiles())
+    },
+    removeSelectedFiles:()=>{
+      return dispatch(removeSelectedFiles())
     }
   }
 }
