@@ -13,15 +13,16 @@ export default class PackagesList extends React.Component{
     var p = <tbody>{this.makePackagesList()}</tbody>;
 
     return (<div>
-
-      <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <thead><tr>
-          <th className="mdl-data-table__cell--non-numeric">Arch</th>
-          <th className="mdl-data-table__cell--non-numeric">Name</th>
-          <th className="mdl-data-table__cell--non-numeric">Version</th>
-        </tr></thead>
-        {p}
-      </table>
+      <div style = {{paddingTop:25}}>
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+          <thead><tr>
+            <th className="mdl-data-table__cell--non-numeric">Arch</th>
+            <th className="mdl-data-table__cell--non-numeric">Name</th>
+            <th className="mdl-data-table__cell--non-numeric">Version</th>
+          </tr></thead>
+          {p}
+        </table>
+      </div>
     </div>)
   }
 }
