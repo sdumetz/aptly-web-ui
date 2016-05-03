@@ -1,5 +1,14 @@
 # aptly-web-ui
-Simple web UI for aptly. Currently only support local repos query and content deletion, but it's under active development and any requests are welcomed.
+Simple web UI for aptly with no backend that connect directly to aptly.
+
+It provides access to the following functions :
+- Upload new packages and add to repos
+- Migrate packages from one repo to another
+- Show packages list
+- Show a package's available versions, description, etc...
+- Remove a package or copy to another repository.
+
+It's under active development and any requests are welcomed.
 
 ## Usage
 
