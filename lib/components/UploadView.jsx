@@ -5,7 +5,7 @@ import request from "../helpers/request.js"
 import RepoPicker from "./RepoPicker.jsx"
 
 import { connect } from 'react-redux'
-import {upload, importUploadedFiles, toggleUpload} from "../actions"
+import {upload, importUploadedFiles, toggleUpload, sendFiles} from "../actions"
 
 export default class UploadView extends React.Component{
   constructor(props){
@@ -22,6 +22,9 @@ export default class UploadView extends React.Component{
   }
   handleToggle(name){
     this.props.toggleUpload(name);
+  }
+  handleSend(){
+    this.props.sendFiles();
   }
   render(){
     var elements = Object.keys(this.props.files).map((name,index)=>{
@@ -46,7 +49,9 @@ export default class UploadView extends React.Component{
           </tbody>
         </table>
       </div>
-
+      <div style={{padding:10}}>
+        <button onClick={this.handleSend.bind(this)} style={{position:"relative",float:"right",marginTop:-20,marginRight:-20, clear:"both"}} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Send</button>
+      </div>
     </div>)
   }
 }
@@ -67,6 +72,9 @@ function mapDispatchToProps(dispatch){
     },
     toggleUpload:(name)=>{
       return dispatch(toggleUpload(name))
+    },
+    sendFiles:()=>{
+      return dispatch(sendFiles())
     }
   }
 }

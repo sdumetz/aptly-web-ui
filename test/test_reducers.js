@@ -29,4 +29,9 @@ describe("uploads",()=>{
     expect(reducer(inactiveState,{type:'UPLOAD_TOGGLE',name:"test_file.txt"})).to.deep.equal(activeState);
     expect(reducer(activeState,{type:'UPLOAD_TOGGLE',name:"test_file.txt"})).to.deep.equal(inactiveState);
   });
+  it("UPLOAD_REMOVE handle",()=>{
+    let firstState = assignState({uploads:{'test_file.txt':{size:25000,progress:0,active:false}}})
+    let finalState = assignState({uploads:{}})
+    expect(reducer(firstState,{type:'UPLOAD_REMOVE',name:"test_file.txt"})).to.deep.equal(finalState);
+  });
 })
