@@ -59,7 +59,9 @@ export default class PackageInfos extends React.Component{
   handleRemove(valid){
     if(valid){
       request.delete(`/api/repos/${this.props.routeParams.repo}/packages`,{PackageRefs:[this.state.infos.Key]}).then((r)=>{
-        return fetch(`/api/publish/:./${this.props.routeParams.repo}`,{method:"PUT",body:{}})
+        return fetch(`/api/publish/:./${this.props.routeParams.repo}`,{method:"PUT",body:{},headers: {
+          "Content-type": "application/json"
+        }})
       }).then(()=>{
         window.location = `/ui/repos/${this.props.routeParams.repo}/packages/${this.props.routeParams.name}`;//We *WANT* the page refresh here. Otherwise we'd have to bubble up the change to edit available packages list.
       }).catch(function(e){
