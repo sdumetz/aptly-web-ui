@@ -3,7 +3,6 @@ import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
 import PackageDetails from "./PackageDetails.jsx"
-import Migrate from "./Migrate.jsx"
 import Dialog from "./ui/Dialog.jsx"
 export default class PackageInfos extends React.Component{
   constructor(props){
@@ -45,10 +44,8 @@ export default class PackageInfos extends React.Component{
         <div>Select a package in the list to see details</div>
       </div>)
     }else{
-      var mig = (this.state.key)? <Migrate pkey={this.state.key}/>:null;
       return (<div>
         <PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>
-        {mig}
         <div>
           <a style={btnStyle} onClick={this.confirmBox.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</a>
         </div>
@@ -58,12 +55,17 @@ export default class PackageInfos extends React.Component{
   confirmBox(handle){
     this.setState({confirm:{title:"Really Delete?",text:`${this.props.routeParams.name}${(this.state.infos.Version)?"-"+this.state.infos.Version:""} (${this.props.repo})`,handle:handle}});
   }
+
   handleRemove(valid){
     if(valid){
       request.delete(`/api/repos/${this.props.routeParams.repo}/packages`,{PackageRefs:[this.state.infos.Key]}).then((r)=>{
-        console.log("deleted package : ",this.props.Key);
+        return fetch(`/api/publish/:./${this.props.routeParams.repo}`,{method:"PUT"})
+      }).then(()=>{
         window.location = `/ui/repos/${this.props.routeParams.repo}/packages/${this.props.routeParams.name}`;//We *WANT* the page refresh here. Otherwise we'd have to bubble up the change to edit available packages list.
-      });
+      }).catch(function(e){
+        console.warn("Error deleting ",this.props.Key,e);
+        console.warn("preventing page refresh to keep context...");
+      })
     }
     this.setState({confirm:null});
   }
