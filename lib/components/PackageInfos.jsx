@@ -59,7 +59,7 @@ export default class PackageInfos extends React.Component{
   handleRemove(valid){
     if(valid){
       request.delete(`/api/repos/${this.props.routeParams.repo}/packages`,{PackageRefs:[this.state.infos.Key]}).then((r)=>{
-        return fetch(`/api/publish/:./${this.props.routeParams.repo}`,{method:"PUT",body:{},headers: {
+        return fetch(`/api/publish/:./${this.props.routeParams.repo}`,{method:"PUT",body:{ForceOverwrite:true},headers: {
           "Content-type": "application/json"
         }})
       }).then(()=>{
