@@ -1,10 +1,14 @@
 'use strict';
+
 const webpack = require("webpack");
 const express = require("express");
 const proxy = require('express-http-proxy');
 const fs = require("fs")
 
+
 var proxy_api_url = process.env.APTLY_WEB_UI_PROXY_API_URL;  // e.g.: 'http://127.0.0.1:8080'
+var port = process.env.APTLY_WEB_UI_PORT || 8080;
+
 
 // Returns an Express server
 var server = express()
@@ -53,8 +57,8 @@ transpiler.watch({ // watch options:
       return handleCompileWarn(jsonStats.warnings)
     console.log("done compiling");
 });
-server.listen(8080,function(){
-  console.log("Loaded server at : http://localhost:8080")
+server.listen(port, function() {
+  console.log("Loaded server at : http://localhost:" + port)
 });
 
 
