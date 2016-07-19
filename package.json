@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "webpack": "webpack --config webpack.config.js",
+    "debug":"export WEBPACK_OPTS='--define process.env.NODE_ENV=\"development\" --watch'; npm run webpack",
+    "webpack": "webpack $WEBPACK_OPTS --config webpack.config.js",
     "test": "mocha --compilers js:babel-register --recursive"
   },
   "repository": {
@@ -33,6 +34,9 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
+    "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.0.11",
     "webpack": "^1.12.12"
   },
   "dependencies": {

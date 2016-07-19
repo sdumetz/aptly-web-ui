@@ -30,6 +30,7 @@ export default class UploadView extends React.Component{
     this.props.removeSelectedFiles();
   }
   render(){
+    console.log("Files : ",this.props.files);
     var elements = Object.keys(this.props.files).map((name,index)=>{
       return <UploadElement name={name}  key={name} active={false} handleClick={this.handleToggle.bind(this,name)} {...this.props.files[name]}/>
     });

@@ -10,6 +10,7 @@ import RepoView from "./components/RepoView.jsx"
 import PackageInfos from "./components/PackageInfos.jsx"
 import UploadView from "./components/UploadView.jsx"
 
+import DevTools from './components/DevTools.jsx';
 
 const store = createStore();
 
@@ -27,3 +28,12 @@ ReactDOM.render(
   </Provider>
   , document.getElementById("container")
 );
+if(process.env.NODE_ENV === 'development'){
+  console.log('DEBUG');
+  var dbug = document.createElement("DIV");
+  dbug.style.position="absolute";
+  dbug.style.top = "0px";
+  dbug.style.left = "0px";
+  document.body.appendChild(dbug);
+  ReactDOM.render(<Provider store={store}><DevTools /></Provider>,dbug)
+}
