@@ -1,11 +1,11 @@
 {
   "name": "aptly-web-ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "aptly web interface. Aptly's REST API consumer\"",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "debug":"export WEBPACK_OPTS='--define process.env.NODE_ENV=\"development\" --watch'; npm run webpack",
+    "debug": "export WEBPACK_OPTS='--define process.env.NODE_ENV=\"development\" --watch'; npm run webpack",
     "webpack": "webpack $WEBPACK_OPTS --config webpack.config.js",
     "test": "mocha --compilers js:babel-register --recursive"
   },
