@@ -1,7 +1,11 @@
 'use strict';
+
 const webpack = require("webpack");
 const express = require("express");
 const fs = require("fs")
+
+var port = process.env.APTLY_WEB_UI_PORT || 8080;
+
 // Returns an Express server
 var server = express()
 var transpiler = webpack(require("./webpack.config.js"))
@@ -40,8 +44,8 @@ transpiler.watch({ // watch options:
       return handleCompileWarn(jsonStats.warnings)
     console.log("done compiling");
 });
-server.listen(8080,function(){
-  console.log("Loaded server at : http://localhost:8080")
+server.listen(port, function() {
+  console.log("Loaded server at : http://localhost:" + port)
 });
 
 
