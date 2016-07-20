@@ -1,7 +1,11 @@
 'use strict';
 const webpack = require("webpack");
 const express = require("express");
+const proxy = require('express-http-proxy');
 const fs = require("fs")
+
+var proxy_api_url = process.env.APTLY_WEB_UI_PROXY_API_URL;  // e.g.: 'http://127.0.0.1:8080'
+
 // Returns an Express server
 var server = express()
 var transpiler = webpack(require("./webpack.config.js"))
@@ -23,11 +27,20 @@ server.get("/ui*",function(req,res){
 
 })
 
-Object.keys(routes).forEach((route)=>{
-  server.get("/api/"+route,function(req,res){
-    res.status(200).send(routes[route])
+if (proxy_api_url) {
+  server.use('/api', proxy(proxy_api_url, {
+    forwardPath: function(req, res) {
+      return '/api' + req.path;
+    }
+  }));
+} else {
+  Object.keys(routes).forEach((route)=>{
+    server.get("/api/"+route,function(req,res){
+      res.status(200).send(routes[route])
+    })
   })
-})
+}
+
 transpiler.watch({ // watch options:
 }, function(err, stats) {
     if(err){

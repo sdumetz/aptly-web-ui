@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "deb-version-compare": "^1.1.1",
+    "express-http-proxy": "^0.7.4",
     "immutable": "^3.8.1",
     "react-dropzone": "^3.4.0",
     "react-redux": "^4.4.5",
