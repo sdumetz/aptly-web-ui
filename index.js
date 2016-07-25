@@ -7,6 +7,8 @@ const fs = require("fs")
 
 
 var proxy_api_url = process.env.APTLY_WEB_UI_PROXY_API_URL;  // e.g.: 'http://127.0.0.1:8080'
+var proxy_api_basic_auth_username = process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_USERNAME;
+var proxy_api_basic_auth_password = process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_PASSWORD;
 var port = process.env.APTLY_WEB_UI_PORT || 8080;
 
 
@@ -35,6 +37,16 @@ if (proxy_api_url) {
   server.use('/api', proxy(proxy_api_url, {
     forwardPath: function(req, res) {
       return '/api' + req.path;
+    },
+    decorateRequest: function(reqOpt, req) {
+      if (proxy_api_basic_auth_username && proxy_api_basic_auth_password) {
+        var auth = 'Basic ' + new Buffer(
+          proxy_api_basic_auth_username + ':' + proxy_api_basic_auth_password
+        ).toString('base64');
+        reqOpt.headers['Authorization'] = auth;
+      }
+      console.log('Sending request to ' + proxy_api_url + '/api' + req.url);
+      return reqOpt;
     }
   }));
 } else {
