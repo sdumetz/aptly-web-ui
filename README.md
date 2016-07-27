@@ -19,7 +19,9 @@ Currently really raw. The install method I use is to decompress the dist [archiv
       - pool
       - ui
 
-My nginx config to serve apt repo + interface :
+### Configuration using nginx
+
+Nginx config to serve apt repo + interface :
 ```
 server {
   listen   80;
@@ -59,6 +61,21 @@ server {
 
 Activate it and navigate to `your-domain.net/ui/`.
 
+### Configuration using nodejs
+
+You can use a nodejs service as a proxy between your frontend and aptly's API.
+
+It's done setting some environment variables :
+
+```
+    export APTLY_WEB_UI_PROXY_API_URL=http://localhost:8080 #your aptly install
+    export APTLY_WEB_UI_PORT=8081  #web ui port
+    npm start
+```
+
+One can create a systemd service unit using `Environment=APTLY_WEB_UI_PROXY_API_URL=http://localhost:8080`.
+
+The only facility provided by the proxy at the moment is [http basic auth](https://github.com/sdumetz/aptly-web-ui/commit/3a20f4fdde47edbf4cb57889f4b8c89b23b39440).
 ## Security
 
 This solution is compatible with external auth methods like [oauth_proxy](https://github.com/bitly/oauth2_proxy).
