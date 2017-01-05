@@ -10,6 +10,12 @@ It provides access to the following functions :
 
 It's under active development and any requests are welcomed.
 
+## Look and feel
+
+![web-ui home page](https://cloud.githubusercontent.com/assets/445200/20797691/33077d76-b7dc-11e6-8cdf-7f818c4eff70.png)
+
+It should be mobile friendly but it's not the main concern right now so it must have some rough edges.
+
 ## Usage
 
 Currently really raw. The install method I use is to decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/blob/gh-pages/aptly-web-ui.tar.gz) in aptly root folder (default to ~/.aptly/public). It should look like this :
