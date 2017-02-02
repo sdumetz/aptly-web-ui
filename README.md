@@ -18,7 +18,7 @@ It should be mobile friendly but it's not the main concern right now so it must 
 
 ## Usage
 
-Currently really raw. The install method I use is to decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/blob/gh-pages/aptly-web-ui.tar.gz) in aptly root folder (default to ~/.aptly/public). It should look like this :
+Decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/blob/gh-pages/aptly-web-ui.tar.gz) in aptly root folder (default to ~/.aptly/public). It should look like this :
 
     ~/.aptly/public
       - dists
@@ -79,16 +79,19 @@ It's done setting some environment variables :
     npm start
 ```
 
-One can create a systemd service unit using `Environment=APTLY_WEB_UI_PROXY_API_URL=http://localhost:8080`.
+You can create a systemd service unit using `Environment=APTLY_WEB_UI_PROXY_API_URL=http://localhost:8080`.
 
 The only facility provided by the proxy at the moment is [http basic auth](https://github.com/sdumetz/aptly-web-ui/commit/3a20f4fdde47edbf4cb57889f4b8c89b23b39440).
+
 ## Security
 
-This solution is compatible with external auth methods like [oauth_proxy](https://github.com/bitly/oauth2_proxy).
+This solution is compatible with external auth methods like [oauth_proxy](https://github.com/bitly/oauth2_proxy). There is currently no read-only interface to serve to unauthorized users.
 
 ## Contribute
 
-Currently very few routes are implemented. This is developped using React and React-router.
+This is developped using React and React-router.
+
+Currently very few routes are implemented. I'd like to add snapshot management in the future and package migration (eg. from testing to stable).
 
 ### BUGS
 
