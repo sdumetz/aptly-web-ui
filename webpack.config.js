@@ -1,3 +1,6 @@
+'use strict';
+const path = require("path");
+const nodeModulesPath = path.resolve(__dirname, 'node_modules');
 module.exports = {
   context: __dirname + "/lib",
   entry: "./index.jsx",
@@ -10,8 +13,8 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel', // 'babel-loader' is also a legal name to reference
+        exclude: [nodeModulesPath],
+        loader: 'babel-loader',
         query: {
           presets: ['react','es2015']
         }
