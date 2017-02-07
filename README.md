@@ -91,8 +91,12 @@ This solution is compatible with external auth methods like [oauth_proxy](https:
 
 This is developped using React and React-router.
 
-Currently very few routes are implemented. I'd like to add snapshot management in the future and package migration (eg. from testing to stable).
+Currently very few routes are implemented. snapshot management would be nice but require some work to be done.
+
 
 ### BUGS
 
 - Will always fetch packages list even if we go straight to a package's URL. (Maybe not a problem : Need to check load on aptly to generate large packages lists).
+
+
+Original Author : [Sebastien DUMETZ](https://sdumetz.github.io).
