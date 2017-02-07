@@ -7,7 +7,7 @@ import RepoPicker from "./RepoPicker.jsx"
 import { connect } from 'react-redux'
 import {upload, importUploadedFiles, toggleUpload, sendSelectedFiles,removeSelectedFiles} from "../actions"
 
-export default class UploadView extends React.Component{
+class UploadView extends React.Component{
   constructor(props){
     super(props)
   }

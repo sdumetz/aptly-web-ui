@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import {fetchReposIfNeeded} from "../actions"
 
 
-export default class Root extends React.Component{
+class Root extends React.Component{
   constructor(props){
     super(props)
   }
