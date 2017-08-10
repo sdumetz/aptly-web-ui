@@ -23,8 +23,8 @@ class UploadView extends React.Component{
   handleToggle(name){
     this.props.toggleUpload(name);
   }
-  handleSend(){
-    this.props.sendSelectedFiles();
+  handleSend(targetIndex){
+    this.props.sendSelectedFiles(targetIndex);
   }
   handleRemove(){
     this.props.removeSelectedFiles();
@@ -51,21 +51,26 @@ class UploadView extends React.Component{
       </div>
       <div>
         Target Repository :
-        <RepoPicker/>
+        <RepoPicker
+          setActive = {this.handleSend.bind(this)}
+          items = {this.props.items}
+        />
       </div>
       <div style={{display:"flex",flexDirection:"row-reverse"}}>
-        <button onClick={this.handleSend.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised">Send</button>
         <button onClick={this.handleRemove.bind(this)} style={{margin:3}} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</button>
       </div>
     </div>)
   }
 }
+
 UploadView.PropTypes = {
   files: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
 }
+
 function mapStateToProps(state){
   const files = state.uploads;
-  return {files:files};
+  const {items} = state.repos;
+  return {files,items};
 }
 function mapDispatchToProps(dispatch){
   return {
@@ -78,8 +83,8 @@ function mapDispatchToProps(dispatch){
     toggleUpload:(name)=>{
       return dispatch(toggleUpload(name))
     },
-    sendSelectedFiles:()=>{
-      return dispatch(sendSelectedFiles())
+    sendSelectedFiles:(t)=>{
+      return dispatch(sendSelectedFiles(t))
     },
     removeSelectedFiles:()=>{
       return dispatch(removeSelectedFiles())

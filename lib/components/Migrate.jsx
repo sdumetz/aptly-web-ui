@@ -1,91 +1,69 @@
 import React, { PropTypes } from "react"
 import request from "../helpers/request.js"
-import parseKey from "../helpers/parseKey.js"
-import {fetchReposIfNeeded} from "../actions"
+import RepoPicker from "./RepoPicker.jsx"
 import { connect } from 'react-redux'
+import parseKey from "../helpers/parseKey";
 
-export default class Migrate extends React.Component{
+import {updateRepo} from "../actions";
+
+class Migrate extends React.Component{
   constructor(props){
-    super(props)
-    this.state = {presence:{},confirm:null};
+    super(props);
+    this.state = {active_in:[this.props.repo]};
   }
-  componentDidMount(){
-    this.props.fetchReposIfNeeded();
-    this.getPackageInfos(this.props.pkey);
+
+  componentWillReceiveProps(props){
+    const p = parseKey(props.activeKey);
+    const query = `${p.name}_${p.version}_${p.arch}`
+    console.log("name:",query, props.activeKey);
+    Promise.all(
+      props.items.map((repo)=>fetch(`/api/repos/${repo.Name}/packages?q=${query}`)
+      .then(r=>r.json()))
+    ).then((responses)=>responses.reduce((foundList,res, idx)=>{
+      if(res.length == 1){
+        foundList.push(props.items[idx].Name);
+      }
+      return foundList;
+    },[])).then((list)=>{this.setState({active_in:list})});
   }
-  componentWillReceiveProps(nextProps){
-    if (nextProps.pkey != this.props.pkey){
-      this.getPackageInfos(nextProps.pkey);
-    }
-  }
-  getPackageInfos(key){
-    var infos = parseKey(key);
-    var packages = this.props.items.map((repo)=>{
-      return request.getJSON(`/api/repos/${repo.Name}/packages?q=${infos.name}_${infos.version}_${infos.arch}`).catch((e)=>{return []})
-    });
-    Promise.all(packages).then((p)=>{
-      var fin = this.props.items.reduce(function(repos,repo,index){
-        repos[repo.Name] = (p[index].length >0)?true:false;
-        return repos;
-      },{});
-      this.setState({presence:fin});
-    });
-  }
-  countActive(presence){
-    return Object.keys(presence).reduce(function(count,repo){
-      return (presence[repo])?count+1:count;
-    },0);
-  }
-  handleChange(repo){
-    //remove / add package to "repo"
-    var stateChange = {}
-    if(!this.state.presence[repo]){
-      request.post("/api/repos/"+repo+"/packages",{"PackageRefs":[this.props.pkey]}).then(()=>{
-        console.log("Added"+this.props.pkey+"to :"+repo);
-        stateChange[repo] = true;
-        this.setState({presence:Object.assign(this.state.presence,stateChange)});
-      }).catch((e)=>{
-        console.log("failed to add",this.props.pkey+"to : "+repo+". Error : ",e);
-      })
-    }else{
-      request.delete("/api/repos/"+repo+"/packages",{"PackageRefs":[this.props.pkey]}).then(()=>{
-        console.log("Removed"+this.props.pkey+"from :"+repo);
-        stateChange[repo] = false;
-        this.setState({presence:Object.assign(this.state.presence,stateChange)});
-      }).catch((e)=>{
-        console.log("failed to remove",this.props.pkey+"from : "+repo+". Error : ",e);
-      })
-    }
+  //triggered with repo's index in list, when any button in RepoPicker is clicked
+  handleActiveChange(index){
+    const targetRepo = this.props.items[index];
+    const active_index = this.state.active_in.indexOf(targetRepo.Name);
+    const lastState = active_index !== -1;
+    let method = (lastState)?"DELETE":"POST";
+    fetch(`/api/repos/${targetRepo.Name}/packages`,{
+      method:method,
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({PackageRefs:[this.props.activeKey]})
+    }).then((r)=>{
+      if(r.ok){
+        console.log(`${(lastState)?"DELETED":"ADDED"} ${this.props.activeKey} in ${targetRepo.Name}`)
+        let actives = this.state.active_in.slice();
+        if (lastState){
+          actives.splice(active_index,1);
+        }else{
+          actives.push(targetRepo.Name);
+        }
+        this.setState({active_in:actives})
+      }else{
+        console.error(`Fail to ${(lastState)?"DELETE":"ADD"} ${this.props.activeKey} in ${targetRepo.Name}`)
+      }
+    }) //We're not interested in the response. Only status code.
   }
   render(){
-    console.log("render",this.state.presence)
-    var cellStyle = {
-      padding:10,
-      minWidth:50,
-      cursor:"pointer"
-    }
-    var repos = Object.keys(this.state.presence).map((repo)=>{
-      return (<div className={(this.state.presence[repo])?"mdl-color--primary":""} style={cellStyle} key={repo} onClick={this.handleChange.bind(this,repo)}>
-        {repo}
-      </div>)
-    })
-    return (<div style={{display:"flex", padding:"0px"}} className="mdl-shadow--2dp">
-      {repos}
-    </div>)
+    return (<div className="migrate" style={{display:"inline-block"}}>
+      <RepoPicker
+        setActive = {this.handleActiveChange.bind(this)}
+        active = {this.state.active_in}
+        items = {this.props.items}
+      />
+    </div>);
   }
-}
-Migrate.PropTypes = {
-  repos: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
 }
 function mapStateToProps(state){
   const {items} = state.repos;
   return {items};
 }
-function mapDispatchToProps(dispatch){
-  return {
-    fetchReposIfNeeded:()=>{
-      return dispatch(fetchReposIfNeeded())
-    }
-  }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Migrate)
+
+export default connect(mapStateToProps)(Migrate);

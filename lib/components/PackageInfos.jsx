@@ -3,6 +3,7 @@ import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
 import Package from "./Package.jsx"
 import PackageDetails from "./PackageDetails.jsx"
+import Migrate from "./Migrate.jsx"
 import Dialog from "./ui/Dialog.jsx"
 export default class PackageInfos extends React.Component{
   constructor(props){
@@ -30,8 +31,8 @@ export default class PackageInfos extends React.Component{
       return (<Package name={this.props.routeParams.name}
         repo = {this.props.routeParams.repo}
         infos={this.props.packages[this.props.routeParams.name]}
-        activeKey={this.state.key} expand={true}
-      />)
+        activeKey={this.state.key} expand={true} />
+      )
     }else{
       return (<tbody></tbody>)
     }
@@ -47,6 +48,10 @@ export default class PackageInfos extends React.Component{
       return (<div>
         <PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>
         <div>
+          <Migrate
+            activeKey={this.state.key}
+            name={this.props.params.name}
+            repo={this.props.params.repo}/>
           <a style={btnStyle} onClick={this.confirmBox.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</a>
         </div>
       </div>)
@@ -73,7 +78,7 @@ export default class PackageInfos extends React.Component{
   }
   render(){
     var dialog = (this.state.confirm)?<Dialog {...this.state.confirm}/>:"";
-    return (<div style={{display:"flex"}}>
+    return (<div className="package-info" style={{display:"flex"}}>
       <div style={{padding:"0px 10px 25px 0px"}}>
       {dialog}
       {this.makePackageInfos()}

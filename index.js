@@ -35,8 +35,9 @@ server.get("/ui*",function(req,res){
 
 if (proxy_api_url) {
   server.use('/api', proxy(proxy_api_url, {
+     limit: '10mb',
     forwardPath: function(req, res) {
-      return '/api' + req.path;
+      return '/api' + req.url;
     },
     decorateRequest: function(reqOpt, req) {
       if (proxy_api_basic_auth_username && proxy_api_basic_auth_password) {
