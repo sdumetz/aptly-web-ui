@@ -5,11 +5,13 @@ const express = require("express");
 const proxy = require('express-http-proxy');
 const fs = require("fs")
 
-
-var proxy_api_url = process.env.APTLY_WEB_UI_PROXY_API_URL;  // e.g.: 'http://127.0.0.1:8080'
-var proxy_api_basic_auth_username = process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_USERNAME;
-var proxy_api_basic_auth_password = process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_PASSWORD;
-var port = process.env.APTLY_WEB_UI_PORT || 8080;
+//Newer conf env vars
+const conf = {
+  url : process.env.PROXY_URL ||process.env.APTLY_WEB_UI_PROXY_API_URL,
+  username: process.env.PROXY_AUTH ||process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_USERNAME,
+  password: process.env.PROXY_PASS ||process.env.APTLY_WEB_UI_PROXY_API_BASIC_AUTH_PASSWORD,
+  port: process.env.PORT ||process.env.APTLY_WEB_UI_PORT||8080
+}
 
 
 // Returns an Express server
@@ -20,6 +22,7 @@ server.use("/ui/vendor",express.static('vendor'));
 server.get("/",function(req,res){
   res.redirect(301, '/ui/');
 })
+//Actual service
 server.get("/ui*",function(req,res){
   res.setHeader("content-type", "text/html");
   fs.stat(__dirname+req.path.replace(/^\/ui/,""),function(err,stats){
@@ -33,31 +36,35 @@ server.get("/ui*",function(req,res){
 
 })
 
-if (proxy_api_url) {
-  server.use('/api', proxy(proxy_api_url, {
+//Proxy to aptly's API if configured
+if (conf.url) {
+  server.use('/api', proxy(conf.url, {
      limit: '10mb',
     forwardPath: function(req, res) {
       return '/api' + req.url;
     },
     decorateRequest: function(reqOpt, req) {
-      if (proxy_api_basic_auth_username && proxy_api_basic_auth_password) {
+      if (conf.username && conf.password) {
         var auth = 'Basic ' + new Buffer(
-          proxy_api_basic_auth_username + ':' + proxy_api_basic_auth_password
+          conf.username + ':' + conf.password
         ).toString('base64');
         reqOpt.headers['Authorization'] = auth;
       }
-      console.log('Sending request to ' + proxy_api_url + '/api' + req.url);
+      console.log('Sending request to ' + conf.url + '/api' + req.url);
       return reqOpt;
     }
   }));
 } else {
+  //DUMMY responses
+  console.log("Using DUMMY API for development")
+  console.log("Set PROXY_URL env var to configure proxy")
   Object.keys(routes).forEach((route)=>{
     server.get("/api/"+route,function(req,res){
       res.status(200).send(routes[route])
     })
   })
 }
-
+//TODO non-watch transpiler for production builds
 transpiler.watch({ // watch options:
 }, function(err, stats) {
     if(err){
@@ -70,8 +77,9 @@ transpiler.watch({ // watch options:
       return handleCompileWarn(jsonStats.warnings)
     console.log("done compiling");
 });
-server.listen(port, function() {
-  console.log("Loaded server at : http://localhost:" + port)
+console.log("port:",conf.port);
+server.listen(conf.port, function() {
+  console.log("Loaded server at : http://localhost:" + conf.port)
 });
 
 

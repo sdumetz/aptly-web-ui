@@ -20,7 +20,11 @@ class Root extends React.Component{
   componentDidMount(){
     this.props.fetchReposIfNeeded();
   }
+  get has_upload(){
+    return /\/ui(\/repos\/[-\w]*)?\/?$/.test(this.props.location.pathname);
+  }
   render(){
+    let btn;
     var contentStyle = {
       display:"flex",
       flexDirection:"row",
@@ -29,25 +33,29 @@ class Root extends React.Component{
 
     }
     var children = this.props.children || (<div>
-
-    <Table list={this.props.items} /></div>)
+      <Table list={this.props.items} />
+    </div>)
+    if (this.has_upload){
+       btn = (<div style={{padding:"15",alignSelf:"flex-end"}}>
+        <UploadButton/>
+      </div>)
+    }
     return (<div className="root mdl-layout__container">
       <Navbar title="Aptly Web UI" {...this.props} />
       <div className="content" style={contentStyle}>
         {children}
-        <div style={{padding:"15",alignSelf:"flex-end"}}>
-          <UploadButton/>
-        </div>
+        {btn}
       </div>
-
       <Footer/>
     </div>)
   }
 }
 
 Root.PropTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
+  have_upload: PropTypes.bool,
+  items: PropTypes.arrayOf( PropTypes.shape({name:PropTypes.string.isRequired}).isRequired).isRequired
 }
+
 function mapStateToProps(state){
   const {items} = state.repos;
   return {items};

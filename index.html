@@ -18,19 +18,19 @@
       color:inherit;
       text-decoration: inherit;
     }
-    .nav-path>a:before{
-      content:">";
-      position:relative;
-      font-size:25px;
-      left:-18px;
-      vertical-align: middle;
-      font-weight:400;
-    }
+
     .nav-path>a{
       font-weight:700;
+      padding: 0 20px;
     }
-    .nav-path>a:hover{
+    .nav-path>a:hover:not(:last-child){
       background-color:rgba(0,0,0,0.1);
+    }
+    .nav-path>a>span{
+      padding: 4px;
+    }
+    .nav-path>a:last-child>span {
+      border-bottom: 2px solid rgba(255,255,255,0.3);
     }
   .spinner {
     -webkit-animation: rotator 1.4s linear infinite;
