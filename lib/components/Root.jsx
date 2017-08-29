@@ -4,6 +4,7 @@ import Table from "./Table.jsx"
 import Navbar from "./layout/Navbar.jsx"
 import Footer from "./layout/Footer.jsx"
 import UploadButton from "./UploadButton.jsx"
+import MainMenu from "./layout/MainMenu.jsx"
 import {Link} from 'react-router'
 
 import { connect } from 'react-redux'
@@ -33,6 +34,7 @@ class Root extends React.Component{
 
     }
     var children = this.props.children || (<div>
+      <MainMenu />
       <Table list={this.props.items} />
     </div>)
     if (this.has_upload){

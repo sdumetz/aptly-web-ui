@@ -10,7 +10,6 @@ import RepoView from "./components/RepoView.jsx"
 import SnapView from "./components/SnapView.jsx"
 import PackageInfos from "./components/PackageInfos.jsx"
 import UploadView from "./components/UploadView.jsx"
-
 import DevTools from './components/DevTools.jsx';
 
 const store = createStore();
