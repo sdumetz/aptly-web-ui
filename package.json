@@ -40,7 +40,7 @@
     "webpack": "^2.2.0"
   },
   "dependencies": {
-    "deb-version-compare": "^1.1.1",
+    "deb-version-compare": "^1.2.1",
     "express-http-proxy": "^0.7.4",
     "react-dropzone": "^3.4.0",
     "react-redux": "^4.4.5",

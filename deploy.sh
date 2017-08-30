@@ -16,7 +16,7 @@ FILES=(
 
 echo "Compiling new static content"
 mkdir -p $TEMP_DIRECTORY || exit 1
-npm run webpack || exit 1
+WEBPACK_OPTS='-p' NODE_ENV='production' npm run webpack || exit 1
 for file in ${FILES[@]}; do cp -r "${file}" $TEMP_DIRECTORY||exit 1; done
 
 echo "copying new content"

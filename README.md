@@ -18,7 +18,7 @@ It should be mobile friendly but it's not the main concern right now so it must 
 
 ## Usage
 
-Decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/blob/gh-pages/aptly-web-ui.tar.gz) in aptly root folder (default to ~/.aptly/public). It should look like this :
+Decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/releases/latest) in aptly root folder (default to ~/.aptly/public). It should look like this :
 
     ~/.aptly/public
       - dists
