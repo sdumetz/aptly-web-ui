@@ -42,7 +42,7 @@ class Root extends React.Component{
         <UploadButton/>
       </div>)
     }
-    return (<div className="root mdl-layout__container">
+    return (<div className="root mdl-layout__container mdl-layout">
       <Navbar title="Aptly Web UI" {...this.props} />
       <div className="content" style={contentStyle}>
         {children}

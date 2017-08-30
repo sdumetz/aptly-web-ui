@@ -14,22 +14,25 @@
       color:#757575;
       font-weight:700;
     }
+    .mdl-layout__header {
+      display: flex;
+    }
     .mdl-layout-title a{
       color:inherit;
       text-decoration: inherit;
     }
 
-    .nav-path>a{
+    nav a{
       font-weight:700;
       padding: 0 20px;
     }
-    .nav-path>a:hover:not(:last-child){
+    .nav-path a:hover:not(.active){
       background-color:rgba(0,0,0,0.1);
     }
-    .nav-path>a>span{
+    .nav-path a>span{
       padding: 4px;
     }
-    .nav-path>a:last-child>span {
+    .nav-path a.active>span {
       border-bottom: 2px solid rgba(255,255,255,0.3);
     }
   .spinner {
