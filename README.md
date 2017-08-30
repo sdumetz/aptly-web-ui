@@ -16,7 +16,7 @@ It's under active development and any requests are welcomed.
 
 It should be mobile friendly but it's not the main concern right now so it must have some rough edges.
 
-## Usage
+## Installation
 
 Decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/releases/latest) in aptly root folder (default to ~/.aptly/public). It should look like this :
 
@@ -24,6 +24,17 @@ Decompress the dist [archive](https://github.com/sdumetz/aptly-web-ui/releases/l
       - dists
       - pool
       - ui
+
+Older releases are available on [github](https://github.com/sdumetz/aptly-web-ui/releases).
+
+Latest commits on `master` branch should always be "usable". You can clone the repository and build it using nodejs (*>=6.0.0*):
+
+```
+git clone git@github.com:sdumetz/aptly-web-ui.git
+npm install
+./deploy.sh
+```
+then extract `aptly-web-ui.tar.gz` to `~/.aptly/public`. All `deploy.sh` do is running `npm run build` and packaging the files.
 
 ### Configuration using nginx
 
