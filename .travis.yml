@@ -1,17 +1,18 @@
 language: node_js
 node_js:
-  - '6'
-  - '8'
+- '6'
+- '8'
 install:
-  - npm install
+- npm install
 before_script:
-  - chmod +x deploy.sh
-script: ./deploy.sh
+- chmod +x deploy.sh
+script: "./deploy.sh"
 test: true
-branches:
-  only:
-    - master
-env:
-  global:
-    - secure: wu4mO6ZhGLeZAVX5khHRe+JGFtVlij3QGuTvcxECgdHhzJbKfNqCLcnuFmfwjb+gQmvUesgRO1TleZWch45rs3K6A99zF+FmAyzoeb+ESsS5RqzvOys9IIO2QhY1rbzjpdFdL+/I47HvcI+BCz22mTaaJX1Xu4+HOz4Fxsuxo0/YlSR2esd6LKD57b49ejaBvLuU+dSxoLVxhDZ2XipXfpEBCzcw0J2Z9BmHj2dFTpn56eA/ziYjFg13VEYHglIvPGX0G6Y07Kljs39MhBSog9LF255foz6UoKwg6VNl1ilPxBd5JhlKmpd93LbAavqiTHjrNxopgTlFdfJd5egw0/mRQcaBYPu/ekVxs5gqkriveyJ3rc2VGi1/2ZiRpXLi0HFZFtIGBhcoCtfESaiCdbClNYsjMwWa93Di2FU1ssKkVwgfXGF2fvbVkDKRfR0caNHpe8nMIi/DvTMdXDSUQBKP5DOyFCFAUl1hB+I+/QMfG4GQfKE8TsXOf32Qul8RaYZ+IOOM6nsnb3V1dq+2amVkJ9L2UuMlZfD0aNXwSwUQbqqrk+6YNProtcJ32a6gYFBJ0UdxTD8BkpWUdAPhHxSdU2tXMt4lFWys0R4K6UEAgAWYL0RgohJte318y/xaKW1c/ppA+BkpGIJrntNIRARTsnQb7vbcjZ3D17UGzpk=
-    - secure: nxSfRarl1m1liGmdCQ1otKE3c9cimEGZhbiyC/blHY8AKSIn40pFvscubK6CylKPD1fkxw/+aJmFEn/ihuVO4/qeZmuoIQ/Oo7YESoA3qY1B63VfjKB/opNQAH5uIF/SDIQ2/Q+BzEkhwIFgwjWbkC5yPRfvhmrvOhc9sBjdHOL40DgYPoS2I0mEIbgUSLRsdtkhNPlXw9TMTc1AgJpjK7yhtwNqoZpA79GMo8TMhxGWJw6y8o9heKhGynntD3mFrjrPmiMSeKKrDkOFWQbtpLuaPeGfvv3YWwX5aSadFnHpMBuVnTKyknXPnkWY8kE8WXLrO9GLUypcXSwXq1CKWDlK1BnVUacbg2lkrYyTFsDsy9YnhQTzPf92u1XwTqWzP4/N9Jsz4dMlmn6pGzXenkQewyr1v95k9ZNcyTkoJB4slIbG2FKIDSf3S5Q2aTn3K+3QfsAZiVTOavZkbslf2O8FLzLuE9KxgGiRZYtgy6pnaMJaOC/G1KmUY488VKfzfY3naVs9lm5xkicKgSOIzZ2nehOicNlgpa+nBWXgxF+MAh+BbuCCosc9CDDXxVTKmLAOQHQFP49RSCJLnmCPpJqx8R7VkGxK/JvcV50buKFZ6/j+ixTqr6bN/X/UT690/Qi/6alTtM/Bi/e7+1hr33LOuQnhSKTyfb37vYWhndE=
+deploy:
+  provider: releases
+  api_key:
+    secure: fJxeAEJfiN2NR+Dy9q5UixiycTVSuWvKRU2KijI/i+h4b3g08Bx8zHU7VihhdILHWxu4gFHsIiayL7NcM0V1n5qkro8U1uVvmmjJze/fxscGcbvnvGLDTwgmi1g5K++f8eGJyeu2+hVi9gM/2zdLGCUwHFj8VQOlClF6GqZ2UiSg8rKQVqVCiwqpJo8ZCgbP/dSunw/DXZBoeiplVi9+Rez5t68zEAZoHpELhc75c8HTMa2ldSkc1ujeQEJ47RXu8DNf0FhULmP1NChsoN+mGwz39nlL2Azhp6p0SpRms9sfHQlWpR0dnyp3/3yHYh55MdA8Lh0R8DExYpQt7tSFwM+nZ/LxB3xujPnWqHRJUxuSpAtskwJlytLI0gEqBCnG9C4Y5jtxdVGzi40Ec+EVhvLS/p+kOOkD3Dmo+q6NvErgrM7UIlP+jd23pHlKtJEd7Yndh8Vc2ZbT2PlvW45jOw+pdhLO5ivvTfPKIPcP4zWB2CYZsKEwgZBGsbH27bQ3/sqFuIZWREpovch/h+gAUvchF0cWYCAMvSV7amEOJp5LumnRCpTSwrkEr/R8x4Iqph65HNrsmM4ZHZQRjH6WnfNeRpTltxVVS35fZiwgVjtIjnRYMiiwKd1gUi9XmbLUSMtEL9GKshavjH7CQjXgsqlqUhc3ReTFIhOsyZT5Jpw=
+  file: aptly-web-ui.tar.gz
+  on:
+    repo: sdumetz/aptly-web-ui
+    tags: true
