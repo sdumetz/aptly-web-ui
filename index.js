@@ -5,6 +5,7 @@ const express = require("express");
 const proxy = require('express-http-proxy');
 const fs = require("fs")
 
+const isProduction = process.env["NODE_ENV"];
 //Newer conf env vars
 const conf = {
   url : process.env.PROXY_URL ||process.env.APTLY_WEB_UI_PROXY_API_URL,
@@ -38,10 +39,10 @@ server.get("/ui*",function(req,res){
 
 //Proxy to aptly's API if configured
 if (conf.url) {
-  server.use('/api', proxy(conf.url, {
+  server.use(/^\/(api|pool|dist)/, proxy(conf.url, {
      limit: '10mb',
     forwardPath: function(req, res) {
-      return '/api' + req.url;
+      return req.originalUrl;
     },
     decorateRequest: function(reqOpt, req) {
       if (conf.username && conf.password) {
@@ -50,7 +51,7 @@ if (conf.url) {
         ).toString('base64');
         reqOpt.headers['Authorization'] = auth;
       }
-      console.log('Sending request to ' + conf.url + '/api' + req.url);
+      if (!isProduction) console.log('Sending request to ' + conf.url + req.originalUrl);
       return reqOpt;
     }
   }));
