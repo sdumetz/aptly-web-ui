@@ -11,7 +11,7 @@ function reduce_snapshots(snaps){
 function Snap(props){
   return (<tr>
     <td>{props.Name}</td>
-    <td>{props.CreatedAt}</td>
+    <td title={props.CreatedAt}>{new Date(props.CreatedAt).toLocaleString()}</td>
     <td>{props.Description}</td>
   </tr>)
 }
