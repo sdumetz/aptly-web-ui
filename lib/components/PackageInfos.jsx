@@ -1,11 +1,16 @@
 import React from "react"
 import request from "../helpers/request.js"
 import parseKey from "../helpers/parseKey.js"
+import getPackagePath from "../helpers/getPackagePath.js"
 import Package from "./Package.jsx"
 import PackageDetails from "./PackageDetails.jsx"
 import Migrate from "./Migrate.jsx"
 import Dialog from "./ui/Dialog.jsx"
-export default class PackageInfos extends React.Component{
+
+
+import { connect } from 'react-redux'
+
+class PackageInfos extends React.Component{
   constructor(props){
     super(props)
     this.state={infos:{},key:""}
@@ -13,25 +18,50 @@ export default class PackageInfos extends React.Component{
   static get contextTypes(){
     return {router: React.PropTypes.object.isRequired}
   }
+
   componentDidMount(){
-    this.getKey(this.props.location.query.key)
+    this.getInfosByKey(this.props.location.query.key)
   }
+
   componentWillReceiveProps(nextProps){
-    this.getKey(nextProps.location.query.key);
+    this.getInfosByKey(nextProps.location.query.key);
   }
-  getKey(key){
+  /* Getters and setters for nested props */
+  get repoName(){
+    return this.props.routeParams.repo;
+  }
+  get repoInfos(){
+    return this.props.items.find(r => r.Name == this.repoName)
+  }
+  get packageList(){
+    return this.props.packages;
+  }
+  get packageName(){
+    return this.props.routeParams.name;
+  }
+  get packageKey(){
+    //DO NOT use this.props.location.query.key except to call getInfosByKey()
+    return this.state.key;
+  }
+  get packageInfos(){
+    return this.state.infos;
+  }
+
+  getInfosByKey(key){ //also, set state
     if(!key) return this.setState({infos:{}});
 
     request.getJSON(`/api/packages/${encodeURIComponent(key)}`).then((r)=>{
       this.setState({infos:r,key:key});
-    })
+    });
   }
+
   makePackagesList(){
-    if(this.props.packages[this.props.routeParams.name]){
-      return (<Package name={this.props.routeParams.name}
-        repo = {this.props.routeParams.repo}
-        infos={this.props.packages[this.props.routeParams.name]}
-        activeKey={this.state.key} expand={true} />
+    console.log(this.packageList[this.packageName])
+    if(this.packageList[this.packageName]){
+      return (<Package name={this.packageName}
+        repo = {this.repoName}
+        infos={this.packageList[this.packageName]}
+        activeKey={this.packageKey} expand={true} />
       )
     }else{
       return (<tbody></tbody>)
@@ -45,6 +75,15 @@ export default class PackageInfos extends React.Component{
         <div>Select a package in the list to see details</div>
       </div>)
     }else{
+      let dl_link;
+      if (this.repoInfos){
+        dl_link = (<a
+        style={btnStyle}
+        href={getPackagePath(this.repoInfos.DefaultComponent, this.packageInfos.Filename)}
+        className="mdl-button mdl-js-button mdl-button--raised">
+        Download
+        </a>)
+      }
       return (<div>
         <PackageDetails {...this.state.infos} repo={this.props.routeParams.repo} name={this.props.routeParams.name}/>
         <div>
@@ -53,6 +92,7 @@ export default class PackageInfos extends React.Component{
             name={this.props.params.name}
             repo={this.props.params.repo}/>
           <a style={btnStyle} onClick={this.confirmBox.bind(this,this.handleRemove.bind(this))} className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Remove</a>
+          {dl_link}
         </div>
       </div>)
     }
@@ -97,3 +137,11 @@ export default class PackageInfos extends React.Component{
     </div>)
   }
 }
+
+
+function mapStateToProps(state){
+  const {items} = state.repos;
+  return {items};
+}
+
+export default connect(mapStateToProps)(PackageInfos)
