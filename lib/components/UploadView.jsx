@@ -52,7 +52,7 @@ class UploadView extends React.Component{
       <div>
         Target Repository :
         <RepoPicker
-          setActive = {this.handleSend.bind(this)}
+          handleClick = {this.handleSend.bind(this)}
           items = {this.props.items}
         />
       </div>

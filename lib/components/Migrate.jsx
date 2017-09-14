@@ -54,7 +54,7 @@ class Migrate extends React.Component{
   render(){
     return (<div className="migrate" style={{display:"inline-block"}}>
       <RepoPicker
-        setActive = {this.handleActiveChange.bind(this)}
+        handleClick = {this.handleActiveChange.bind(this)}
         active = {this.state.active_in}
         items = {this.props.items}
       />

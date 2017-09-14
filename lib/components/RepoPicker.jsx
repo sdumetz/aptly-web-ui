@@ -1,15 +1,21 @@
 'use strict';
 import React, { PropTypes } from "react"
 
-/* Global state can only have 1 active repo. However this widget supports an array of props.active so it can be used for package migration */
+/* Global state can only have 1 active repo.
+However this widget supports an array of props.active so it can be used for package migration and snapshots creation It takes properties :
+ - handleClick : a callback handler. Gets element's index as a parameter
+ - active : an array of pre-selected item names (optionnal)
+ - items : an array of objects of shape : {Name:foo}
+*/
 function RepoPicker(props){
   var {active,items} = props;
   active = active ||[]; //default value
+
   const repos = items.map((r,index)=>{
     return (<button
       className={`mdl-button mdl-js-button mdl-js-ripple-effect ${( active.indexOf(r.Name) != -1)?"mdl-button--primary":""}`}
       key={index}
-      onClick={props.setActive.bind(null,index)}
+      onClick={props.handleClick.bind(null,index)}
       >
         {r.Name}
       </button>)
