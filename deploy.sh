@@ -9,7 +9,8 @@ FILES=(
   'dist'
   'vendor'
 )
-
+echo "Running tests"
+npm test
 echo "Compiling new static content"
 mkdir -p $TEMP_DIRECTORY || exit 1
 WEBPACK_OPTS='-p' NODE_ENV='production' npm run webpack || exit 1

@@ -12,6 +12,7 @@ deploy:
   provider: releases
   api_key:
     secure: fJxeAEJfiN2NR+Dy9q5UixiycTVSuWvKRU2KijI/i+h4b3g08Bx8zHU7VihhdILHWxu4gFHsIiayL7NcM0V1n5qkro8U1uVvmmjJze/fxscGcbvnvGLDTwgmi1g5K++f8eGJyeu2+hVi9gM/2zdLGCUwHFj8VQOlClF6GqZ2UiSg8rKQVqVCiwqpJo8ZCgbP/dSunw/DXZBoeiplVi9+Rez5t68zEAZoHpELhc75c8HTMa2ldSkc1ujeQEJ47RXu8DNf0FhULmP1NChsoN+mGwz39nlL2Azhp6p0SpRms9sfHQlWpR0dnyp3/3yHYh55MdA8Lh0R8DExYpQt7tSFwM+nZ/LxB3xujPnWqHRJUxuSpAtskwJlytLI0gEqBCnG9C4Y5jtxdVGzi40Ec+EVhvLS/p+kOOkD3Dmo+q6NvErgrM7UIlP+jd23pHlKtJEd7Yndh8Vc2ZbT2PlvW45jOw+pdhLO5ivvTfPKIPcP4zWB2CYZsKEwgZBGsbH27bQ3/sqFuIZWREpovch/h+gAUvchF0cWYCAMvSV7amEOJp5LumnRCpTSwrkEr/R8x4Iqph65HNrsmM4ZHZQRjH6WnfNeRpTltxVVS35fZiwgVjtIjnRYMiiwKd1gUi9XmbLUSMtEL9GKshavjH7CQjXgsqlqUhc3ReTFIhOsyZT5Jpw=
+  skip_cleanup: true
   file: aptly-web-ui.tar.gz
   on:
     repo: sdumetz/aptly-web-ui
