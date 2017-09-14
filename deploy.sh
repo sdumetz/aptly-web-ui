@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "Starting deployment"
-# Travis provided vars : GIT_NAME GIT_EMAIL GH_TOKEN
 BUILD_DIRECTORY="/tmp/tmp_build_dir"
 TEMP_DIRECTORY=$BUILD_DIRECTORY/ui
 DIR=$(pwd)
