@@ -12,13 +12,23 @@ function RepoPicker(props){
   active = active ||[]; //default value
 
   const repos = items.map((r,index)=>{
-    return (<button
-      className={`mdl-button mdl-js-button mdl-js-ripple-effect ${( active.indexOf(r.Name) != -1)?"mdl-button--primary":""}`}
+    return (<label
+      className="mdl-checkbox"
+      style={{padding:5,width:"auto",height:40}}
       key={index}
-      onClick={props.handleClick.bind(null,index)}
-      >
+      htmlFor={`picker-toggle-${index}`}>
+      <input
+        onChange={props.handleClick.bind(null,index)}
+        type="checkbox"
+        style={{display:"none"}}
+        id={`picker-toggle-${index}`}
+        className="mdl-checkbox__input"
+        checked={( active.indexOf(r.Name) != -1)?true:false} />
+      <span
+        className={`mdl-button mdl-js-button mdl-js-ripple-effect ${( active.indexOf(r.Name) != -1)?"mdl-button--primary":""}`}>
         {r.Name}
-      </button>)
+      </span>
+    </label>)
   })
   return (
     <div className="repo-picker">

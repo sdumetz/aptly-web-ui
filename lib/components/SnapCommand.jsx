@@ -9,30 +9,31 @@ export default class SnapCommand extends React.Component{
   handleClick(index){
     var target = this.props.items[index];
     var idx = this.state.selectedNames.indexOf(target.Name);
-    var newSelection = this.state.selectedNames.slice(0); //clone
-
-    if (idx == -1) { // toggle
-      newSelection.push(target.Name);
-    }else{
-      newSelection.splice(idx,1);
-    }
+    var newSelection = [target.Name]; //clone
     this.setState({selectedNames:newSelection});
   }
   handleSend(e){
-    console.log(e.dispatchConfig);
     e.preventDefault();
-    if (!this.state.snapName || !this.state.selectedNames.length ){
+    console.log("children : ",this.children)
+    if (!this.snapshotName.value || !this.state.selectedNames[0]){
       alert("select a repo and a snapshot name");
       return;
     }
-    this.state.selectedNames.forEach((repoName)=>{
-      fetch(`/api/repos/${repoName}/snapshots`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({Name:this.state.snapName})
-      })
+    var repoName = this.state.selectedNames[0];
+    var data = {   Name:this.snapshotName.value }
+    if (this.snapshotDesc.value){ data["Description"] = this.snapshotDesc.value}
+    console.log(this.snapshotName, this.snapshotName)
+    fetch(`/api/repos/${repoName}/snapshots`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(data)
+    }).then((r)=>{
+      if (!r.ok){
+        alert("Failed to create snapshot");
+      }else{
+        alert("snapshot created");
+      }
     })
-
     return false;
   }
   render(){
@@ -43,7 +44,15 @@ export default class SnapCommand extends React.Component{
           items={this.props.items}
           active={this.state.selectedNames}
           handleClick={this.handleClick.bind(this)}/>
-        <button type="submit" onClick={this.handleSend.bind(this)}>Take Snapshot</button>
+        <label>Name</label>
+        <input type="text" id="snapshot-name" placeholder="name" style={{width:"100%"}} ref={(input)=>this.snapshotName = input}/>
+        <label>Description</label>
+        <input type="text" id="snapshot-description" placeholder="description" style={{width:"100%"}} ref={(input)=>this.snapshotDesc = input}/>
+        <button
+          type="submit"
+          className="mdl-button mdl-button--raised mdl-button--colored"
+          style={{float:"right",textAlign:"right"}}
+          onClick={this.handleSend.bind(this)}>Take Snapshot</button>
       </form>
       <span>Partial snapshots not supported yet</span>
     </div>)
