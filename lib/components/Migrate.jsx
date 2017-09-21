@@ -54,9 +54,12 @@ class Migrate extends React.Component{
       }
     }).then(function(ok){
       if(!ok){return}
-      return fetch(`/api/publish//${targetRepo.Name}`,{
-        method:"POST"
-      })
+      //FIXME some people might want prefixes
+      return fetch( `/api/publish/:./${targetRepo.Name}`, {
+        method:"PUT",
+        body:JSON.stringify({ForceOverwrite:true}),
+        headers: {"Content-type": "application/json"}
+      });
     })
   }
   render(){
