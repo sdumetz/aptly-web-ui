@@ -37,6 +37,7 @@ class Migrate extends React.Component{
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({PackageRefs:[this.props.activeKey]})
     }).then((r)=>{
+      //We're not interested in the response. Only status code.
       if(r.ok){
         console.log(`${(lastState)?"DELETED":"ADDED"} ${this.props.activeKey} in ${targetRepo.Name}`)
         let actives = this.state.active_in.slice();
@@ -46,10 +47,17 @@ class Migrate extends React.Component{
           actives.push(targetRepo.Name);
         }
         this.setState({active_in:actives})
+        return true;
       }else{
         console.error(`Fail to ${(lastState)?"DELETE":"ADD"} ${this.props.activeKey} in ${targetRepo.Name}`)
+        return false;
       }
-    }) //We're not interested in the response. Only status code.
+    }).then(function(ok){
+      if(!ok){return}
+      return fetch(`/api/publish//${targetRepo.Name}`,{
+        method:"POST"
+      })
+    })
   }
   render(){
     return (<div className="migrate" style={{display:"inline-block"}}>
